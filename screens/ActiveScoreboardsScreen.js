@@ -11,26 +11,24 @@ import Colors from "../constants/Colors";
 const ActiveScoreboardsScreen = (props) => {
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={[Colors.third, Colors.blue]}
-        style={styles.gradient}
-      >
-        <Text style={styles.title}>Your Active Games</Text>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.listContainer}>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>1. Liverpool 2021-08-13</Text>
-              <Text style={styles.listItemText}>2. Liverpool 2021-08-13</Text>
-              <Text style={styles.listItemText}>3. Liverpool 2021-08-13</Text>
-              <Text style={styles.listItemText}>4. Liverpool 2021-08-13</Text>
-              <Text style={styles.listItemText}>5. Liverpool 2021-08-13</Text>
-              <Text style={styles.listItemText}>6. Liverpool 2021-08-13</Text>
-              <Text style={styles.listItemText}>7. Liverpool 2021-08-13</Text>
-              <Text style={styles.listItemText}>8. Liverpool 2021-08-13</Text>
-            </View>
+      <Text style={styles.title}>Your Active Games</Text>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.listContainer}>
+          <View>
+            <Text style={styles.listItemText}>1. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>2. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>3. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>4. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>5. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>6. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>7. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>8. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>6. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>7. Liverpool 2021-08-13</Text>
+            <Text style={styles.listItemText}>8. Liverpool 2021-08-13</Text>
           </View>
-        </ScrollView>
-      </LinearGradient>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -58,7 +56,7 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     alignContent: "center",
-    backgroundColor: Colors.secondary,
+    backgroundColor: "white",
   },
   gradient: {
     width: "100%",
@@ -70,22 +68,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  listItem: {
-    marginVertical: 8,
-  },
   listItemText: {
+    textAlignVertical: "center",
     marginVertical: 4,
-    paddingHorizontal: "10%",
-    paddingVertical: 4,
+    paddingHorizontal: "5%",
     color: Colors.black,
     fontSize: 22,
-    shadowColor: "black",
+    shadowColor: Colors.black,
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     elevation: 4,
     backgroundColor: "white",
     borderRadius: 8,
+    borderColor: Colors.ceruleancrayola,
+    borderWidth: 1,
   },
   scrollView: {
     width: "80%",
@@ -93,9 +90,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    color: "white",
+    color: Colors.black,
     marginTop: "16%",
-    marginBottom: "6%",
+    marginBottom: "2%",
   },
 });
 

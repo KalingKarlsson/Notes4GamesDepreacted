@@ -15,9 +15,9 @@ import Colors from "../constants/Colors";
 
 const defaultStackNavOptions = {
   headerStyle: {
-    backgroundColor: Platform.OS === "android" ? Colors.primary : "",
+    backgroundColor: Platform.OS === "android" ? Colors.blue : "",
   },
-  headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
+  headerTintColor: Platform.OS === "android" ? "white" : Colors.blue,
   headerTitle: "This Screen",
 };
 
@@ -52,7 +52,7 @@ const tabScreenConfig = {
           <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
         );
       },
-      tabBarColor: Colors.third,
+      tabBarColor: Colors.blue,
       tabBarLabel: Platform.OS === "android" ? <Text>Active</Text> : "Active",
     },
   },
@@ -62,7 +62,7 @@ const tabScreenConfig = {
       tabBarIcon: (tabInfo) => {
         return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
-      tabBarColor: Colors.primary,
+      tabBarColor: Colors.ceruleancrayola,
       tabBarLabel: Platform.OS === "android" ? <Text>History</Text> : "History",
     },
   },
@@ -74,12 +74,12 @@ const BottomTabNavigator =
         activeTintColor: "white",
         shifting: true,
         barStyle: {
-          backgroundColor: Colors.primary,
+          backgroundColor: Colors.blue,
         },
       })
     : createBottomTabNavigator(tabScreenConfig, {
         tabBarOptions: {
-          activeTintColor: Colors.accent,
+          activeTintColor: Colors.blue,
         },
       });
 
