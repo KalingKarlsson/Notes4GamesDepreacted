@@ -40,7 +40,12 @@ ActiveScoreboardsScreen.navigationOptions = (navData) => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="New Scoreboard"
-          iconName={Platform.OS === "android" ? "md-add" : "ios.add"}
+          iconName={
+            Platform.OS === "android"
+              ? "md-add-circle-outline"
+              : "ios-add-circle-outline"
+          }
+          iconSize={6}
           onPress={() => {
             navData.navigation.navigate("NewScoreboard");
           }}
@@ -69,17 +74,26 @@ const styles = StyleSheet.create({
   },
 
   listItemText: {
+    //text
     textAlignVertical: "center",
+    fontSize: 22,
+    fontFamily: "open-sans",
+    color: Colors.black,
+
+    //container
     marginVertical: 4,
     paddingHorizontal: "5%",
-    color: Colors.black,
-    fontSize: 22,
+    backgroundColor: "white",
+
+    //ios
     shadowColor: Colors.black,
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
+    //android
     elevation: 4,
-    backgroundColor: "white",
+
+    //border
     borderRadius: 8,
     borderColor: Colors.ceruleancrayola,
     borderWidth: 1,
@@ -90,6 +104,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
+    fontFamily: "open-sans-bold",
     color: Colors.black,
     marginTop: "16%",
     marginBottom: "2%",

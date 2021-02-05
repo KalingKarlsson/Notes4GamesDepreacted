@@ -2,7 +2,6 @@ import React from "react";
 import { Platform, Text } from "react-native";
 import { createBottomTabNavigator, createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { createDrawerNavigator } from "react-navigation-drawer";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,6 +15,12 @@ import Colors from "../constants/Colors";
 const defaultStackNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.blue : "",
+  },
+  headerTitleStyle: {
+    fontFamily: "open-sans-bold",
+  },
+  headerBackTitleStyle: {
+    fontFamily: "open-sans",
   },
   headerTintColor: Platform.OS === "android" ? "white" : Colors.blue,
   headerTitle: "This Screen",
@@ -49,7 +54,11 @@ const tabScreenConfig = {
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
         return (
-          <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
+          <Ionicons
+            name="ios-home-outline"
+            size={25}
+            color={tabInfo.tintColor}
+          />
         );
       },
       tabBarColor: Colors.blue,
@@ -60,7 +69,13 @@ const tabScreenConfig = {
     screen: HistoryNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
-        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
+        return (
+          <Ionicons
+            name="ios-time-outline"
+            size={25}
+            color={tabInfo.tintColor}
+          />
+        );
       },
       tabBarColor: Colors.ceruleancrayola,
       tabBarLabel: Platform.OS === "android" ? <Text>History</Text> : "History",
