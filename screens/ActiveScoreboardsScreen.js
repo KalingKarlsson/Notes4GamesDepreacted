@@ -15,17 +15,51 @@ const ActiveScoreboardsScreen = (props) => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.listContainer}>
           <View>
-            <Text style={styles.listItemText}>1. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>2. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>3. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>4. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>5. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>6. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>7. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>8. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>6. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>7. Liverpool 2021-08-13</Text>
-            <Text style={styles.listItemText}>8. Liverpool 2021-08-13</Text>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>1. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>2. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>3. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>4. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>5. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>6. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>7. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>8. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>9. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>10. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>11. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>12. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>13. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>14. Liverpool 2021-08-13</Text>
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.listItemText}>15. Liverpool 2021-08-13</Text>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -72,14 +106,7 @@ const styles = StyleSheet.create({
   listContainer: {
     alignItems: "center",
   },
-
-  listItemText: {
-    //text
-    textAlignVertical: "center",
-    fontSize: 22,
-    fontFamily: "open-sans",
-    color: Colors.black,
-
+  listItem: {
     //container
     marginVertical: 4,
     paddingHorizontal: "5%",
@@ -97,6 +124,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: Colors.ceruleancrayola,
     borderWidth: 1,
+  },
+  listItemText: {
+    //text
+    fontSize: 22,
+    fontFamily: "open-sans",
+    color: Colors.black,
   },
   scrollView: {
     width: "80%",

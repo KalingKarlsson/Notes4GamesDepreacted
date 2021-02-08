@@ -4,6 +4,8 @@ export default {
   confirm: "#0bcd05", //green
   cancel: "#e10000", //red
   black: "black",
+  white: "white",
+  grey: "#c7c7c7",
   orange: "#ca6500",
   third: "#C2185B",
   accent: "#FFC107",
