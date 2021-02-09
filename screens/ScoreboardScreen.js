@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Platform,
@@ -11,11 +11,34 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
+import GridItem from "../components/GridItem";
 import HeaderButton from "../components/HeaderButton";
 import * as scoreboardActions from "../store/scoreboard-actions";
 import Colors from "../constants/Colors";
 
 const ScoreboardScreen = (props) => {
+  const [enteredValue, setEnteredValue] = useState("");
+
+  const numberInputHandler = (inputText) => {
+    setEnteredValue(inputText.replace(/[^0-9]/g, ""));
+  };
+
+  let players = [
+    "Anton",
+    "Tess",
+    "Kaling",
+    "Trisse",
+    "Totte",
+    "Charlott",
+    "Kalinga",
+    "Edward",
+  ];
+
+  let Liverpool = [8];
+  let Skummeslöv = [13];
+
+  let dummydata = 63;
+
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.title}>Skummeslöv</Text>
@@ -27,340 +50,31 @@ const ScoreboardScreen = (props) => {
           <View style={styles.gridItem}>
             <Text style={styles.gridItemScore}></Text>
           </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore} keyboardType="numeric">
-              Kalinga
-            </TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}>Kalinga</TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}>Kalinga</TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}>Kalinga</TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}>Kalinga</TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}>Kalinga</TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}>Kalinga</TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}>Kalinga</TextInput>
-          </View>
+          {players.map((item) => (
+            <View style={styles.gridItem}>
+              <GridItem
+                style={styles.gridItemScore}
+                blurOnSubmit
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={item}
+              />
+            </View>
+          ))}
 
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>3</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>4</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>5</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>6</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>7</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>8</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>9</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>10</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>11</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>12</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-
-          <View style={styles.gridItem}>
-            <Text style={styles.gridItemScore}>13</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
-          <View style={styles.gridItem}>
-            <TextInput style={styles.gridItemScore}></TextInput>
-          </View>
+          {[...Array(dummydata)].map((i) => (
+            <View style={styles.gridItem}>
+              <GridItem
+                style={styles.gridItemScore}
+                blurOnSubmit
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="number-pad"
+                onChangeText={numberInputHandler}
+                value={enteredValue}
+              />
+            </View>
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -393,6 +107,10 @@ const styles = StyleSheet.create({
   },
   gridItemScore: {
     fontSize: 18,
+    width: "100%",
+    height: "100%",
+    textAlign: "center",
+    justifyContent: "center",
   },
   mainContainer: {
     width: "100%",
