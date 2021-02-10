@@ -18,10 +18,23 @@ import Colors from "../constants/Colors";
 
 const ScoreboardScreen = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
+  const [counter, setCounter] = useState(3);
 
   const numberInputHandler = (inputText) => {
     setEnteredValue(inputText.replace(/[^0-9]/g, ""));
   };
+
+  const increment = () => {
+    setCounter((prevState) => prevState + 1);
+  };
+
+  const SkummeslövCounter = () => {
+    [...Array(txtArr)].map((item, key) => (key = { key }));
+  };
+
+  useEffect(() => {
+    setCounter(increment);
+  }, [setCounter]);
 
   let players = [
     "Anton",
@@ -34,10 +47,25 @@ const ScoreboardScreen = (props) => {
     "Edward",
   ];
 
-  let Liverpool = [8];
-  let Skummeslöv = [13];
+  const Liverpool = [8];
+  const Skummeslöv = [
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+  ];
+
+  let txtArr = Array(11).fill(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
 
   let dummydata = 63;
+  let count = 3;
 
   return (
     <View style={styles.mainContainer}>
@@ -62,7 +90,8 @@ const ScoreboardScreen = (props) => {
             </View>
           ))}
 
-          {[...Array(dummydata)].map((i) => (
+          {[...Array(dummydata)].map((item, key) => (
+            //{key % 9 ? enteredValue : }
             <View style={styles.gridItem}>
               <GridItem
                 style={styles.gridItemScore}
@@ -71,7 +100,8 @@ const ScoreboardScreen = (props) => {
                 autoCorrect={false}
                 keyboardType="number-pad"
                 onChangeText={numberInputHandler}
-                value={enteredValue}
+                key={key}
+                value={key % 9 ? enteredValue : increment}
               />
             </View>
           ))}
