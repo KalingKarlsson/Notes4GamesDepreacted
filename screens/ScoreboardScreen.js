@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -18,25 +19,14 @@ import Colors from "../constants/Colors";
 
 const ScoreboardScreen = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
-  const [counter, setCounter] = useState(3);
 
   const numberInputHandler = (inputText) => {
     setEnteredValue(inputText.replace(/[^0-9]/g, ""));
   };
 
-  const increment = () => {
-    setCounter((prevState) => prevState + 1);
-  };
+  const Liverpool = [8];
 
-  const SkummeslövCounter = () => {
-    [...Array(txtArr)].map((item, key) => (key = { key }));
-  };
-
-  useEffect(() => {
-    setCounter(increment);
-  }, [setCounter]);
-
-  let players = [
+  const players = [
     "Anton",
     "Tess",
     "Kaling",
@@ -47,7 +37,6 @@ const ScoreboardScreen = (props) => {
     "Edward",
   ];
 
-  const Liverpool = [8];
   const Skummeslöv = [
     "3",
     "4",
@@ -62,19 +51,13 @@ const ScoreboardScreen = (props) => {
     "13",
   ];
 
-  let txtArr = Array(11).fill(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
-
-  let dummydata = 63;
-  let count = 3;
+  let dummydata = 88;
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={styles.screen}>
       <Text style={styles.title}>Skummeslöv</Text>
-      <ScrollView
-        contentContainerStyle={{ alignItems: "center" }}
-        style={styles.scroller}
-      >
-        <View style={styles.grid}>
+      <View style={styles.grid}>
+        <View style={styles.gridPlayers}>
           <View style={styles.gridItem}>
             <Text style={styles.gridItemScore}></Text>
           </View>
@@ -86,27 +69,47 @@ const ScoreboardScreen = (props) => {
                 autoCapitalize="none"
                 autoCorrect={false}
                 value={item}
-              />
-            </View>
-          ))}
-
-          {[...Array(dummydata)].map((item, key) => (
-            //{key % 9 ? enteredValue : }
-            <View style={styles.gridItem}>
-              <GridItem
-                style={styles.gridItemScore}
-                blurOnSubmit
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="number-pad"
-                onChangeText={numberInputHandler}
-                key={key}
-                value={key % 9 ? enteredValue : increment}
+                maxLength={8}
+                textContentType="name"
               />
             </View>
           ))}
         </View>
-      </ScrollView>
+
+        <ScrollView style={styles.scroller}>
+          <View style={styles.gridColumns}>
+            <View style={styles.gridRounds}>
+              {Skummeslöv.map((item) => (
+                <View style={styles.gridItemCol}>
+                  <GridItem
+                    style={styles.gridItemScore}
+                    blurOnSubmit
+                    editable={false}
+                    value={item}
+                  />
+                </View>
+              ))}
+            </View>
+
+            <View style={styles.gridContent}>
+              {[...Array(dummydata)].map((item, key) => (
+                <View style={styles.gridItemCol}>
+                  <GridItem
+                    style={styles.gridItemScore}
+                    blurOnSubmit
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    keyboardType="number-pad"
+                    onChangeText={numberInputHandler}
+                    key={key}
+                    maxLength={4}
+                  />
+                </View>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -120,13 +123,25 @@ ScoreboardScreen.navigationOptions = (navData) => {
 const styles = StyleSheet.create({
   grid: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     flexWrap: "wrap",
-    width: "80%",
+    paddingHorizontal: 50,
+    paddingTop: 10,
   },
   gridItem: {
-    width: 70,
+    width: "11%",
     height: 50,
+    backgroundColor: Colors.white,
+
+    borderWidth: 1,
+    borderColor: Colors.grey,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  gridItemCol: {
+    height: 50,
+    width: Platform.OS === "android" ? 65.1 : 78.315,
     backgroundColor: Colors.white,
 
     borderWidth: 1,
@@ -142,9 +157,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
   },
-  mainContainer: {
+  gridPlayers: {
     width: "100%",
+    height: "20%",
+    flexDirection: "row",
+  },
+  gridColumns: {
+    height: 550,
+    flexDirection: "row",
+    width: "100%",
+  },
+  gridRounds: {
+    width: "11%",
     height: "100%",
+  },
+  gridContent: {
+    flexWrap: "wrap",
+    width: "89%",
+  },
+  screen: {
+    flex: 1,
     backgroundColor: Colors.white,
     alignItems: "center",
     justifyContent: "center",
