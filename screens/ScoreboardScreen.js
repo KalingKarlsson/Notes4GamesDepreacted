@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Platform,
-  FlatList,
   View,
   Text,
-  TextInput,
   ScrollView,
-  KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
-  Button,
+  TouchableHighlight,
+  Alert,
+  Modal,
 } from "react-native";
+import { DeviceMotion } from "expo-sensors";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 import CustomButton from "../components/CustomButton";
 import GridItem from "../components/GridItem";
@@ -21,39 +22,41 @@ import HeaderButton from "../components/HeaderButton";
 import * as scoreboardActions from "../store/scoreboard-actions";
 import Colors from "../constants/Colors";
 
+const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
+
+const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
+
+const players = [
+  "Anton",
+  "Tess",
+  "Kaling",
+  "Trisse",
+  "Totte",
+  "Charlott",
+  "Kalinga",
+  "Edward",
+];
+
 const ScoreboardScreen = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const numberInputHandler = (inputText) => {
     setEnteredValue(inputText.replace(/[^0-9]/g, ""));
   };
+  /* 
+  DeviceMotion.addListener(({ rotation }) => {
+    const alpha = Math.abs(rotation.alpha);
+    this.setState({
+      orientation:
+        alpha > 3 || (alpha > 0 && alpha < 0.5) ? "landscape" : "portrait",
+    });
+  }); */
 
-  const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
-
-  const Skummeslöv = [
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-  ];
-
-  const players = [
-    "Anton",
-    "Tess",
-    "Kaling",
-    "Trisse",
-    "Totte",
-    "Charlott",
-    "Kalinga",
-    "Edward",
-  ];
+  console.log(DeviceMotion.getListenerCount());
+  DeviceMotion.removeAllListeners();
+  /*   deviceOrientation.remove();
+  DeviceMotion.removeAllListeners(); */
 
   let numOfBlankTiles = players.length * Skummeslöv.length;
 
@@ -66,13 +69,14 @@ const ScoreboardScreen = (props) => {
             <View style={styles.gridItem}>
               <Text style={styles.gridItemScore}></Text>
             </View>
-            {players.map((item) => (
-              <View style={styles.gridItem}>
+            {players.map((item, key) => (
+              <View style={styles.gridItem} key={key}>
                 <GridItem
                   style={styles.gridItemScore}
                   blurOnSubmit
                   autoCapitalize="none"
                   autoCorrect={false}
+                  key={key}
                   value={item}
                   maxLength={8}
                   textContentType="name"
@@ -81,15 +85,19 @@ const ScoreboardScreen = (props) => {
             ))}
           </View>
 
-          <ScrollView style={styles.scroller}>
+          <ScrollView
+            style={styles.scroller}
+            contentContainerStyle={{ alignItems: "center" }}
+          >
             <View style={styles.gridColumns}>
               <View style={styles.gridRounds}>
-                {Skummeslöv.map((item) => (
-                  <View style={styles.gridItemCol}>
+                {Skummeslöv.map((item, key) => (
+                  <View style={styles.gridItemCol} key={key}>
                     <GridItem
                       style={styles.gridItemScore}
                       blurOnSubmit
                       editable={false}
+                      key={key}
                       value={item}
                     />
                   </View>
@@ -98,7 +106,7 @@ const ScoreboardScreen = (props) => {
 
               <View style={styles.gridContent}>
                 {[...Array(numOfBlankTiles)].map((item, key) => (
-                  <View style={styles.gridItemCol}>
+                  <View style={styles.gridItemCol} key={key}>
                     <GridItem
                       style={styles.gridItemScore}
                       blurOnSubmit
@@ -113,8 +121,38 @@ const ScoreboardScreen = (props) => {
                 ))}
               </View>
             </View>
+
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>Hello World!</Text>
+
+                  <TouchableHighlight
+                    style={styles.openButton}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Hide Modal</Text>
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </Modal>
+
             <View style={styles.button}>
-              <CustomButton title="Calculate Scores" onPress={() => {}} />
+              <CustomButton
+                title="Calculate Scores"
+                onPress={() => {
+                  setModalVisible(true);
+                }}
+              />
             </View>
           </ScrollView>
         </View>
@@ -217,6 +255,45 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans-bold",
     color: Colors.black,
     marginBottom: 2,
+  },
+
+  //modal added stuff
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
 

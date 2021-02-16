@@ -4,6 +4,8 @@ import { Picker } from "@react-native-picker/picker";
 import Slider from "@react-native-community/slider";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { DeviceMotion } from "expo-sensors";
 
 import CustomButton from "../components/CustomButton";
 import GameInput from "../components/GameInput";
