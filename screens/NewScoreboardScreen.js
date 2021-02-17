@@ -59,6 +59,7 @@ const NewScoreboardScreen = (props) => {
             <Text style={styles.number}>{isPickedNumber.toFixed(0)}</Text>
             <View style={styles.createScoreboardButton}>
               <CustomButton
+                title="Create Scoreboard"
                 onPress={() => {
                   createScoreboardHandler();
                 }}

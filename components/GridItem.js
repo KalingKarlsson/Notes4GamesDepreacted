@@ -7,7 +7,6 @@ const GridItem = (props) => {
 
 const styles = StyleSheet.create({
   input: {
-    fontSize: 18,
     width: "100%",
     height: "100%",
     textAlign: "center",
