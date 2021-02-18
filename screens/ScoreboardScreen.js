@@ -39,16 +39,70 @@ const players = [
 
 const ScoreboardScreen = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [inputData, setInputData] = useState([]);
 
-  const numberInputHandler = (inputText) => {
+  const numberInputHandler = (inputText, index) => {
     setEnteredValue(inputText.replace(/[^0-9]/g, ""));
+    addValues(inputText, index);
   };
 
   const window = useWindowDimensions();
 
   let numOfBlankTiles = players.length * Skummeslöv.length;
-  let sum = 0;
+
+  const contentArr = () => {
+    return [...Array(numOfBlankTiles)].map((item, key) => (
+      <View style={stylesPort.gridItemCol} key={key}>
+        <GridItem
+          style={stylesPort.gridItemScore}
+          blurOnSubmit
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="number-pad"
+          onChangeText={numberInputHandler}
+          key={key}
+          maxLength={4}
+        />
+      </View>
+    ));
+  };
+
+  //function to add text from TextInputs into single array
+  const addValues = (text, index) => {
+    let dataArray = inputData;
+    let checkBool = false;
+    if (dataArray.length !== 0) {
+      dataArray.forEach((element) => {
+        if (element.index === index) {
+          element.text = text;
+          checkBool = true;
+        }
+      });
+    }
+    if (checkBool) {
+      setInputData(dataArray);
+    } else {
+      dataArray.push({ text: text, index: index });
+      setInputData(dataArray);
+    }
+  };
+
+  const calculateScores = () => {
+    const points = contentArr();
+    let total = 0;
+    let scoresTotal = [];
+    for (let index = 0; index < points.length; index++) {
+      const element = points[index];
+      total = total + element;
+
+      if (index % 11) {
+        scoresTotal.push(total);
+        total = 0;
+      }
+    }
+
+    return scoresTotal;
+  };
 
   if (window.height > window.width) {
     return (
@@ -97,22 +151,7 @@ const ScoreboardScreen = (props) => {
                   ))}
                 </View>
 
-                <View style={stylesPort.gridContent}>
-                  {[...Array(numOfBlankTiles)].map((item, key) => (
-                    <View style={stylesPort.gridItemCol} key={key}>
-                      <GridItem
-                        style={stylesPort.gridItemScore}
-                        blurOnSubmit
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        keyboardType="number-pad"
-                        onChangeText={numberInputHandler}
-                        key={key}
-                        maxLength={4}
-                      />
-                    </View>
-                  ))}
-                </View>
+                <View style={stylesPort.gridContent}>{contentArr()}</View>
               </View>
 
               <View style={stylesPort.button}>
@@ -121,10 +160,31 @@ const ScoreboardScreen = (props) => {
                   onPress={() => {
                     Alert.alert(
                       "Scores",
-                      numOfBlankTiles.forEach((element) => {
-                        sum = sum + element;
-                      })
+                      inputData,
+                      [
+                        {
+                          text: "Cancel",
+                          onPress: () => console.log("Cancel Pressed"),
+                          style: "cancel",
+                        },
+                        {
+                          text: "OK",
+                          onPress: () => console.log("OK Pressed"),
+                        },
+                      ],
+                      { cancelable: false }
                     );
+                    console.log("hello world");
+                    for (let i in inputData) {
+                      console.log(inputData[i]); // only latest element
+                    }
+                    //  console.log(inputData.map((item) => {})); //undefined
+
+                    /*                     console.log(
+                      calculateScores().map((key) => {
+                        <Text>{key.toString()}</Text>;
+                      })
+                    ); */ //undefined
                   }}
                 />
               </View>
@@ -197,17 +257,7 @@ const ScoreboardScreen = (props) => {
               </View>
 
               <View style={stylesLand.button}>
-                <CustomButton
-                  title="Calculate Scores"
-                  onPress={() => {
-                    Alert.alert(
-                      "Scores",
-                      numOfBlankTiles.forEach((element) => {
-                        sum = sum + element;
-                      })
-                    );
-                  }}
-                />
+                <CustomButton title="Calculate Scores" onPress={() => {}} />
               </View>
             </ScrollView>
           </View>
