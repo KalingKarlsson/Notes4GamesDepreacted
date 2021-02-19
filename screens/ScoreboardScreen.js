@@ -7,15 +7,13 @@ import {
   ScrollView,
   Keyboard,
   TouchableWithoutFeedback,
-  TouchableHighlight,
   Alert,
-  Modal,
   useWindowDimensions,
 } from "react-native";
 import { DeviceMotion } from "expo-sensors";
+import * as ScreenOrientation from "expo-screen-orientation";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import * as ScreenOrientation from "expo-screen-orientation";
 
 import CustomButton from "../components/CustomButton";
 import GridItem from "../components/GridItem";
@@ -37,13 +35,29 @@ const players = [
   "Edward",
 ];
 
+/* const playersSkumm = {
+  players: [
+    "Anton",
+    "Tess",
+    "Kaling",
+    "Trisse",
+    "Totte",
+    "Charlott",
+    "Kalinga",
+    "Edward",
+  ],
+
+  Skummeslöv: ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
+}; */
+
 const ScoreboardScreen = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
-  const [inputData, setInputData] = useState([]);
+  const [state, setState] = useState({
+    inputData: [],
+  });
 
   const numberInputHandler = (inputText, index) => {
-    setEnteredValue(inputText.replace(/[^0-9]/g, ""));
-    addValues(inputText, index);
+    inputText = inputText.replace(/[^0-9]/g, "");
   };
 
   const window = useWindowDimensions();
@@ -51,26 +65,28 @@ const ScoreboardScreen = (props) => {
   let numOfBlankTiles = players.length * Skummeslöv.length;
 
   const contentArr = () => {
-    return [...Array(numOfBlankTiles)].map((item, key) => (
-      <View style={stylesPort.gridItemCol} key={key}>
+    return [...Array(numOfBlankTiles)].map((item, index) => (
+      <View style={stylesPort.gridItemCol} key={item}>
         <GridItem
           style={stylesPort.gridItemScore}
           blurOnSubmit
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="number-pad"
-          onChangeText={numberInputHandler}
-          key={key}
+          key={item}
+          onChangeText={(text) => addValues(text, index)}
           maxLength={4}
         />
       </View>
     ));
   };
 
-  //function to add text from TextInputs into single array
   const addValues = (text, index) => {
-    let dataArray = inputData;
+    let dataArray = state.inputData;
     let checkBool = false;
+
+    text = text.replace(/[^0-9]/g, "");
+
     if (dataArray.length !== 0) {
       dataArray.forEach((element) => {
         if (element.index === index) {
@@ -79,16 +95,22 @@ const ScoreboardScreen = (props) => {
         }
       });
     }
+
     if (checkBool) {
-      setInputData(dataArray);
+      setState({
+        inputData: dataArray,
+      });
     } else {
       dataArray.push({ text: text, index: index });
-      setInputData(dataArray);
+      setState({
+        inputData: dataArray,
+      });
     }
+    console.log(state.inputData);
   };
 
-  const calculateScores = () => {
-    const points = contentArr();
+  /* const calculateScores = () => {
+    const points = contentArr;
     let total = 0;
     let scoresTotal = [];
     for (let index = 0; index < points.length; index++) {
@@ -102,6 +124,25 @@ const ScoreboardScreen = (props) => {
     }
 
     return scoresTotal;
+  }; */
+
+  const outputData = () => {
+    let summary = 0;
+    let scoresTotal = [];
+
+    for (let index = 0; index < state.inputData.length; index++) {
+      const element = state.inputData[index];
+      console.log(element.text);
+
+      summary = summary + +element.text;
+      console.log(index + "\n");
+
+      if ((((index + 1) % 11) + 11) % 11 === 0) {
+        scoresTotal.push(summary);
+        summary = 0;
+      }
+    }
+    return scoresTotal.toString();
   };
 
   if (window.height > window.width) {
@@ -123,10 +164,8 @@ const ScoreboardScreen = (props) => {
                     autoCorrect={false}
                     key={key}
                     value={item}
-                    maxLength={8}
+                    maxLength={3}
                     textContentType="name"
-                    multiline={true}
-                    numberOfLines={2}
                   />
                 </View>
               ))}
@@ -160,7 +199,7 @@ const ScoreboardScreen = (props) => {
                   onPress={() => {
                     Alert.alert(
                       "Scores",
-                      inputData,
+                      outputData(),
                       [
                         {
                           text: "Cancel",
@@ -174,10 +213,25 @@ const ScoreboardScreen = (props) => {
                       ],
                       { cancelable: false }
                     );
-                    console.log("hello world");
-                    for (let i in inputData) {
-                      console.log(inputData[i]); // only latest element
-                    }
+                    /*                     console.log("\nhello world\n");
+                    for (
+                      let index = 0;
+                      index < state.inputData.length;
+                      index++
+                    ) {
+                      const element = state.inputData[index];
+                      console.log(element.text);
+                    } */
+
+                    //  console.log(state.text); // undefined
+                    /*                     console.log("\n--------------\n");
+
+                    console.log(state.inputData[0].text);
+
+                    console.log("\n---------------\n");
+
+                    console.log(state.inputData); */
+
                     //  console.log(inputData.map((item) => {})); //undefined
 
                     /*                     console.log(
