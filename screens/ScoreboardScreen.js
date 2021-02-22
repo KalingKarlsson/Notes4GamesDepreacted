@@ -106,7 +106,6 @@ const ScoreboardScreen = (props) => {
         inputData: dataArray,
       });
     }
-    console.log(state.inputData);
   };
 
   /* const calculateScores = () => {
@@ -130,19 +129,30 @@ const ScoreboardScreen = (props) => {
     let summary = 0;
     let scoresTotal = [];
 
-    for (let index = 0; index < state.inputData.length; index++) {
-      const element = state.inputData[index];
-      console.log(element.text);
+    const sortedInputArray = state.inputData;
 
-      summary = summary + +element.text;
-      console.log(index + "\n");
+    sortedInputArray.sort(function (a, b) {
+      return a.index - b.index;
+    });
 
-      if ((((index + 1) % 11) + 11) % 11 === 0) {
-        scoresTotal.push(summary);
-        summary = 0;
+    for (let index = 0; index < sortedInputArray.length; index++) {
+      for (let i = 0; i < players.length; i++) {
+        const name = players[i];
+
+        for (let j = 0; j < 11; j++) {
+          const element = sortedInputArray[index];
+          summary = summary + +element.text;
+        }
+
+        if ((index + 1) % 11 === 0) {
+          scoresTotal.push(name, summary);
+          summary = 0;
+        }
       }
     }
-    return scoresTotal.toString();
+    let scores = scoresTotal.toString();
+    console.log(scores);
+    return scores;
   };
 
   if (window.height > window.width) {
