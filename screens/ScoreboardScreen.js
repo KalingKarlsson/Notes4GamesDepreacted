@@ -145,14 +145,13 @@ const ScoreboardScreen = (props) => {
         }
 
         if ((index + 1) % 11 === 0) {
-          scoresTotal.push(name, summary);
+          scoresTotal.push(name, "\t\t", summary, "\n");
           summary = 0;
         }
       }
     }
     let scores = scoresTotal.toString();
-    console.log(scores);
-    return scores;
+    return scores.replace(/,/g, " ");
   };
 
   if (window.height > window.width) {
