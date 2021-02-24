@@ -128,6 +128,7 @@ const ScoreboardScreen = (props) => {
   const outputData = () => {
     let summary = 0;
     let scoresTotal = [];
+    let results = [];
 
     const sortedInputArray = state.inputData;
 
@@ -136,21 +137,33 @@ const ScoreboardScreen = (props) => {
     });
 
     for (let index = 0; index < sortedInputArray.length; index++) {
-      for (let i = 0; i < players.length; i++) {
-        const name = players[i];
+      const element = sortedInputArray[index]; //object of first index
+      summary = summary + +element.text;
 
-        for (let j = 0; j < 11; j++) {
-          const element = sortedInputArray[index];
-          summary = summary + +element.text;
-        }
+      if ((index + 1) % 11 === 0) {
+        scoresTotal.push(summary);
+        summary = 0;
+      }
+    }
 
-        if ((index + 1) % 11 === 0) {
-          scoresTotal.push(name, "\t\t", summary, "\n");
-          summary = 0;
+    for (let i = 0; i < players.length; i++) {
+      const name = players[i]; //name of first player
+
+      for (let j = 0; j < scoresTotal.length; j++) {
+        const playerSum = scoresTotal[j];
+
+        if (i == j) {
+          results.push({ name: name, sum: playerSum });
         }
       }
     }
-    let scores = scoresTotal.toString();
+
+    results.sort(function (a, b) {
+      return a.sum - b.sum;
+    });
+
+    let scores = JSON.stringify(results);
+    console.log(scores);
     return scores.replace(/,/g, " ");
   };
 
