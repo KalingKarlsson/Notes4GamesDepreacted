@@ -108,23 +108,6 @@ const ScoreboardScreen = (props) => {
     }
   };
 
-  /* const calculateScores = () => {
-    const points = contentArr;
-    let total = 0;
-    let scoresTotal = [];
-    for (let index = 0; index < points.length; index++) {
-      const element = points[index];
-      total = total + element;
-
-      if (index % 11) {
-        scoresTotal.push(total);
-        total = 0;
-      }
-    }
-
-    return scoresTotal;
-  }; */
-
   const outputData = () => {
     let summary = 0;
     let scoresTotal = [];
@@ -135,6 +118,7 @@ const ScoreboardScreen = (props) => {
     sortedInputArray.sort(function (a, b) {
       return a.index - b.index;
     });
+    console.log(sortedInputArray);
 
     for (let index = 0; index < sortedInputArray.length; index++) {
       const element = sortedInputArray[index]; //object of first index
@@ -162,9 +146,15 @@ const ScoreboardScreen = (props) => {
       return a.sum - b.sum;
     });
 
-    let scores = JSON.stringify(results);
-    console.log(scores);
-    return scores.replace(/,/g, " ");
+    console.log(results);
+    let finalResults = "";
+    for (let k = 0; k < results.length; k++) {
+      const element = results[k];
+      finalResults += k + 1 + ": " + element.name + " " + element.sum + "\n";
+    }
+    console.log(finalResults);
+
+    return finalResults;
   };
 
   if (window.height > window.width) {
@@ -570,3 +560,9 @@ const stylesLand = StyleSheet.create({
 });
 
 export default ScoreboardScreen;
+
+function sort(results) {
+  results.sort(function (a, b) {
+    return a.sum - b.sum;
+  });
+}
