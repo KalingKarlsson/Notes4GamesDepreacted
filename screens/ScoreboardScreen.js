@@ -6,19 +6,17 @@ import {
   Text,
   ScrollView,
   Keyboard,
+  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Alert,
   useWindowDimensions,
 } from "react-native";
-import { DeviceMotion } from "expo-sensors";
-import * as ScreenOrientation from "expo-screen-orientation";
 import { useSelector, useDispatch } from "react-redux";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomButton from "../components/CustomButton";
 import GridItem from "../components/GridItem";
-import * as scoreboardActions from "../store/scoreboard-actions";
 import Colors from "../constants/Colors";
+import * as scoreboardActions from "../store/scoreboard-actions";
 
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
@@ -35,28 +33,12 @@ const players = [
   "Edward",
 ];
 
-/* const playersSkumm = {
-  players: [
-    "Anton",
-    "Tess",
-    "Kaling",
-    "Trisse",
-    "Totte",
-    "Charlott",
-    "Kalinga",
-    "Edward",
-  ],
-
-  Skummeslöv: ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
-}; */
-
 const ScoreboardScreen = (props) => {
-  const [enteredValue, setEnteredValue] = useState("");
   const [state, setState] = useState({
     inputData: [],
   });
 
-  const numberInputHandler = (inputText, index) => {
+  const numberInputHandler = (inputText) => {
     inputText = inputText.replace(/[^0-9]/g, "");
   };
 
@@ -64,7 +46,7 @@ const ScoreboardScreen = (props) => {
 
   let numOfBlankTiles = players.length * Skummeslöv.length;
 
-  const contentArr = () => {
+  const contentArrPort = () => {
     return [...Array(numOfBlankTiles)].map((item, index) => (
       <View style={stylesPort.gridItemCol} key={item}>
         <GridItem
@@ -75,6 +57,23 @@ const ScoreboardScreen = (props) => {
           keyboardType="number-pad"
           key={item}
           onChangeText={(text) => addValues(text, index)}
+          maxLength={4}
+        />
+      </View>
+    ));
+  };
+
+  const contentArrLand = () => {
+    return [...Array(numOfBlankTiles)].map((item, key) => (
+      <View style={stylesLand.gridItemCol} key={key}>
+        <GridItem
+          style={stylesLand.gridItemScore}
+          blurOnSubmit
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="number-pad"
+          onChangeText={numberInputHandler}
+          key={key}
           maxLength={4}
         />
       </View>
@@ -118,7 +117,6 @@ const ScoreboardScreen = (props) => {
     sortedInputArray.sort(function (a, b) {
       return a.index - b.index;
     });
-    console.log(sortedInputArray);
 
     for (let index = 0; index < sortedInputArray.length; index++) {
       const element = sortedInputArray[index]; //object of first index
@@ -146,22 +144,23 @@ const ScoreboardScreen = (props) => {
       return a.sum - b.sum;
     });
 
-    console.log(results);
     let finalResults = "";
     for (let k = 0; k < results.length; k++) {
       const element = results[k];
       finalResults += k + 1 + ": " + element.name + " " + element.sum + "\n";
     }
-    console.log(finalResults);
 
+    console.log(finalResults);
     return finalResults;
   };
+
+  const allPlayersDone = outputData();
 
   if (window.height > window.width) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={stylesPort.screen}>
-          <Text style={stylesPort.title}>Liverpool</Text>
+          <Text style={stylesPort.title}>Skummeslöv</Text>
           <View style={stylesPort.grid}>
             <View style={stylesPort.gridPlayers}>
               <View style={stylesPort.gridItem}>
@@ -172,88 +171,64 @@ const ScoreboardScreen = (props) => {
                   <GridItem
                     style={stylesPort.gridItemScore}
                     blurOnSubmit
+                    editable="false"
                     autoCapitalize="none"
                     autoCorrect={false}
                     key={key}
                     value={item}
-                    maxLength={3}
+                    maxLength={4}
+                    numberOfLines={1}
                     textContentType="name"
                   />
                 </View>
               ))}
             </View>
 
-            <ScrollView
-              style={stylesPort.scroller}
-              contentContainerStyle={{ alignItems: "center" }}
-            >
-              <View style={stylesPort.gridColumns}>
-                <View style={stylesPort.gridRounds}>
-                  {Skummeslöv.map((item, key) => (
-                    <View style={stylesPort.gridItemCol} key={key}>
-                      <GridItem
-                        style={stylesPort.gridItemScore}
-                        blurOnSubmit
-                        editable={false}
-                        key={key}
-                        value={item}
-                      />
-                    </View>
-                  ))}
+            <ScrollView style={stylesPort.scroller}>
+              <KeyboardAvoidingView
+                contentContainerStyle={{ alignItems: "center", height: "100%" }}
+                behavior={Platform.OS === "android" ? "padding" : "position"}
+                keyboardVerticalOffset={125}
+              >
+                <View style={stylesPort.gridColumns}>
+                  <View style={stylesPort.gridRounds}>
+                    {Skummeslöv.map((item, key) => (
+                      <View style={stylesPort.gridItemCol} key={key}>
+                        <GridItem
+                          style={stylesPort.gridItemScore}
+                          blurOnSubmit
+                          editable={false}
+                          key={key}
+                          value={item}
+                        />
+                      </View>
+                    ))}
+                  </View>
+
+                  <View style={stylesPort.gridContent}>{contentArrPort()}</View>
                 </View>
 
-                <View style={stylesPort.gridContent}>{contentArr()}</View>
-              </View>
-
-              <View style={stylesPort.button}>
-                <CustomButton
-                  title="Calculate Scores"
-                  onPress={() => {
-                    Alert.alert(
-                      "Scores",
-                      outputData(),
-                      [
-                        {
-                          text: "Cancel",
-                          onPress: () => console.log("Cancel Pressed"),
-                          style: "cancel",
-                        },
-                        {
-                          text: "OK",
-                          onPress: () => console.log("OK Pressed"),
-                        },
-                      ],
-                      { cancelable: false }
-                    );
-                    /*                     console.log("\nhello world\n");
-                    for (
-                      let index = 0;
-                      index < state.inputData.length;
-                      index++
-                    ) {
-                      const element = state.inputData[index];
-                      console.log(element.text);
-                    } */
-
-                    //  console.log(state.text); // undefined
-                    /*                     console.log("\n--------------\n");
-
-                    console.log(state.inputData[0].text);
-
-                    console.log("\n---------------\n");
-
-                    console.log(state.inputData); */
-
-                    //  console.log(inputData.map((item) => {})); //undefined
-
-                    /*                     console.log(
-                      calculateScores().map((key) => {
-                        <Text>{key.toString()}</Text>;
-                      })
-                    ); */ //undefined
-                  }}
-                />
-              </View>
+                <View style={stylesPort.button}>
+                  <CustomButton
+                    title="Calculate Scores"
+                    onPress={() => {
+                      Alert.alert(
+                        "Scores",
+                        allPlayersDone.length === players.length
+                          ? outputData()
+                          : "All players are not finished yet!",
+                        [
+                          {
+                            text: "OK",
+                            onPress: () => console.log("OK Pressed"),
+                          },
+                        ],
+                        { cancelable: false }
+                      );
+                    }}
+                  />
+                </View>
+              </KeyboardAvoidingView>
             </ScrollView>
           </View>
         </View>
@@ -274,11 +249,13 @@ const ScoreboardScreen = (props) => {
                   <GridItem
                     style={stylesLand.gridItemScore}
                     blurOnSubmit
+                    editable="false"
                     autoCapitalize="none"
                     autoCorrect={false}
                     key={key}
                     value={item}
-                    maxLength={8}
+                    maxLength={4}
+                    numberOfLines={1}
                     textContentType="name"
                   />
                 </View>
@@ -296,7 +273,7 @@ const ScoreboardScreen = (props) => {
                       <GridItem
                         style={stylesLand.gridItemScore}
                         blurOnSubmit
-                        editable={false}
+                        editable="false"
                         key={key}
                         value={item}
                       />
@@ -304,22 +281,7 @@ const ScoreboardScreen = (props) => {
                   ))}
                 </View>
 
-                <View style={stylesLand.gridContent}>
-                  {[...Array(numOfBlankTiles)].map((item, key) => (
-                    <View style={stylesLand.gridItemCol} key={key}>
-                      <GridItem
-                        style={stylesLand.gridItemScore}
-                        blurOnSubmit
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        keyboardType="number-pad"
-                        onChangeText={numberInputHandler}
-                        key={key}
-                        maxLength={4}
-                      />
-                    </View>
-                  ))}
-                </View>
+                <View style={stylesLand.gridContent}>{contentArrLand()}</View>
               </View>
 
               <View style={stylesLand.button}>
