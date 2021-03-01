@@ -19,28 +19,14 @@ import Colors from "../constants/Colors";
 import * as scoreboardActions from "../store/scoreboard-actions";
 
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
-
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 
-const players = [
-  "Anton",
-  "Tess",
-  "Kaling",
-  "Trisse",
-  "Totte",
-  "Charlott",
-  "Kalinga",
-  "Edward",
-];
+const players = ["Anton", "Trisse", "Totte"];
 
 const ScoreboardScreen = (props) => {
   const [state, setState] = useState({
     inputData: [],
   });
-
-  const numberInputHandler = (inputText) => {
-    inputText = inputText.replace(/[^0-9]/g, "");
-  };
 
   const window = useWindowDimensions();
 
@@ -48,14 +34,13 @@ const ScoreboardScreen = (props) => {
 
   const contentArrPort = () => {
     return [...Array(numOfBlankTiles)].map((item, index) => (
-      <View style={stylesPort.gridItemCol} key={item}>
+      <View style={stylesPort.gridItemCol} key={index}>
         <GridItem
           style={stylesPort.gridItemScore}
           blurOnSubmit
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="number-pad"
-          key={item}
           onChangeText={(text) => addValues(text, index)}
           maxLength={4}
         />
@@ -64,16 +49,15 @@ const ScoreboardScreen = (props) => {
   };
 
   const contentArrLand = () => {
-    return [...Array(numOfBlankTiles)].map((item, key) => (
-      <View style={stylesLand.gridItemCol} key={key}>
+    return [...Array(numOfBlankTiles)].map((item, index) => (
+      <View style={stylesLand.gridItemCol} key={item}>
         <GridItem
           style={stylesLand.gridItemScore}
           blurOnSubmit
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="number-pad"
-          onChangeText={numberInputHandler}
-          key={key}
+          onChangeText={(text) => addValues(text, index)}
           maxLength={4}
         />
       </View>
@@ -156,6 +140,27 @@ const ScoreboardScreen = (props) => {
 
   const allPlayersDone = outputData();
 
+  const scoresDialog = (
+    <CustomButton
+      title="Calculate Scores"
+      onPress={() => {
+        Alert.alert(
+          "Scores",
+          allPlayersDone.length === players.length
+            ? outputData()
+            : "All players are not finished yet!",
+          [
+            {
+              text: "OK",
+              onPress: () => console.log("OK Pressed"),
+            },
+          ],
+          { cancelable: false }
+        );
+      }}
+    />
+  );
+
   if (window.height > window.width) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -171,7 +176,7 @@ const ScoreboardScreen = (props) => {
                   <GridItem
                     style={stylesPort.gridItemScore}
                     blurOnSubmit
-                    editable="false"
+                    editable={false}
                     autoCapitalize="none"
                     autoCorrect={false}
                     key={key}
@@ -184,9 +189,15 @@ const ScoreboardScreen = (props) => {
               ))}
             </View>
 
-            <ScrollView style={stylesPort.scroller}>
+            <ScrollView
+              centerContent={true}
+              style={stylesPort.scroller}
+              contentContainerStyle={{
+                alignItems: "center",
+              }}
+            >
               <KeyboardAvoidingView
-                contentContainerStyle={{ alignItems: "center", height: "100%" }}
+                contentContainerStyle={{ alignItems: "center" }}
                 behavior={Platform.OS === "android" ? "padding" : "position"}
                 keyboardVerticalOffset={125}
               >
@@ -208,26 +219,7 @@ const ScoreboardScreen = (props) => {
                   <View style={stylesPort.gridContent}>{contentArrPort()}</View>
                 </View>
 
-                <View style={stylesPort.button}>
-                  <CustomButton
-                    title="Calculate Scores"
-                    onPress={() => {
-                      Alert.alert(
-                        "Scores",
-                        allPlayersDone.length === players.length
-                          ? outputData()
-                          : "All players are not finished yet!",
-                        [
-                          {
-                            text: "OK",
-                            onPress: () => console.log("OK Pressed"),
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    }}
-                  />
-                </View>
+                <View style={stylesPort.button}>{scoresDialog}</View>
               </KeyboardAvoidingView>
             </ScrollView>
           </View>
@@ -249,7 +241,7 @@ const ScoreboardScreen = (props) => {
                   <GridItem
                     style={stylesLand.gridItemScore}
                     blurOnSubmit
-                    editable="false"
+                    editable={false}
                     autoCapitalize="none"
                     autoCorrect={false}
                     key={key}
@@ -273,7 +265,7 @@ const ScoreboardScreen = (props) => {
                       <GridItem
                         style={stylesLand.gridItemScore}
                         blurOnSubmit
-                        editable="false"
+                        editable={false}
                         key={key}
                         value={item}
                       />
@@ -284,9 +276,7 @@ const ScoreboardScreen = (props) => {
                 <View style={stylesLand.gridContent}>{contentArrLand()}</View>
               </View>
 
-              <View style={stylesLand.button}>
-                <CustomButton title="Calculate Scores" onPress={() => {}} />
-              </View>
+              <View style={stylesLand.button}>{scoresDialog}</View>
             </ScrollView>
           </View>
         </View>
@@ -322,6 +312,7 @@ const stylesPort = StyleSheet.create({
     borderRadius: 8,
   },
   grid: {
+    alignItems: "center",
     flex: 1,
     flexDirection: "column",
     flexWrap: "wrap",
@@ -345,9 +336,6 @@ const stylesPort = StyleSheet.create({
 
     borderWidth: 1,
     borderColor: Colors.grey,
-
-    justifyContent: "center",
-    alignItems: "center",
   },
   gridItemScore: {
     width: "100%",
@@ -360,9 +348,9 @@ const stylesPort = StyleSheet.create({
     flexDirection: "row",
   },
   gridColumns: {
+    width: "100%",
     height: 550,
     flexDirection: "row",
-    width: "100%",
   },
   gridRounds: {
     width: "11%",
@@ -479,45 +467,6 @@ const stylesLand = StyleSheet.create({
     fontFamily: "open-sans-bold",
     color: Colors.black,
     marginBottom: 2,
-  },
-
-  //modal added stuff
-
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
   },
 });
 
