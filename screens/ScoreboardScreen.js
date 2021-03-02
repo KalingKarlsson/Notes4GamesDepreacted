@@ -21,7 +21,16 @@ import * as scoreboardActions from "../store/scoreboard-actions";
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 
-const players = ["Anton", "Trisse", "Totte"];
+const players = [
+  "Anton",
+  "Trisse",
+  "Totte",
+  "Kalle",
+  "Tess",
+  "Alice",
+  "Bob",
+  "Charlie",
+];
 
 const ScoreboardScreen = (props) => {
   const [state, setState] = useState({
@@ -30,10 +39,11 @@ const ScoreboardScreen = (props) => {
 
   const window = useWindowDimensions();
 
-  let numOfBlankTiles = players.length * Skummeslöv.length;
+  let numOfBlankTilesSkumm = players.length * Skummeslöv.length;
+  let numOfBlankTilesLiverpool = players.length * Liverpool.length;
 
   const contentArrPort = () => {
-    return [...Array(numOfBlankTiles)].map((item, index) => (
+    return [...Array(numOfBlankTilesLiverpool)].map((item, index) => (
       <View style={stylesPort.gridItemCol} key={index}>
         <GridItem
           style={stylesPort.gridItemScore}
@@ -49,8 +59,8 @@ const ScoreboardScreen = (props) => {
   };
 
   const contentArrLand = () => {
-    return [...Array(numOfBlankTiles)].map((item, index) => (
-      <View style={stylesLand.gridItemCol} key={item}>
+    return [...Array(numOfBlankTilesLiverpool)].map((item, index) => (
+      <View style={stylesLand.gridItemCol} key={index}>
         <GridItem
           style={stylesLand.gridItemScore}
           blurOnSubmit
@@ -190,38 +200,30 @@ const ScoreboardScreen = (props) => {
             </View>
 
             <ScrollView
-              centerContent={true}
               style={stylesPort.scroller}
               contentContainerStyle={{
                 alignItems: "center",
               }}
             >
-              <KeyboardAvoidingView
-                contentContainerStyle={{ alignItems: "center" }}
-                behavior={Platform.OS === "android" ? "padding" : "position"}
-                keyboardVerticalOffset={125}
-              >
-                <View style={stylesPort.gridColumns}>
-                  <View style={stylesPort.gridRounds}>
-                    {Skummeslöv.map((item, key) => (
-                      <View style={stylesPort.gridItemCol} key={key}>
-                        <GridItem
-                          style={stylesPort.gridItemScore}
-                          blurOnSubmit
-                          editable={false}
-                          key={key}
-                          value={item}
-                        />
-                      </View>
-                    ))}
-                  </View>
-
-                  <View style={stylesPort.gridContent}>{contentArrPort()}</View>
+              <View style={stylesPort.gridColumns}>
+                <View style={stylesPort.gridRounds}>
+                  {Liverpool.map((item, key) => (
+                    <View style={stylesPort.gridItemCol} key={key}>
+                      <GridItem
+                        style={stylesPort.gridItemScore}
+                        blurOnSubmit
+                        editable={false}
+                        key={key}
+                        value={item}
+                      />
+                    </View>
+                  ))}
                 </View>
 
-                <View style={stylesPort.button}>{scoresDialog}</View>
-              </KeyboardAvoidingView>
+                <View style={stylesPort.gridContent}>{contentArrPort()}</View>
+              </View>
             </ScrollView>
+            <View style={stylesPort.button}>{scoresDialog}</View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -312,8 +314,8 @@ const stylesPort = StyleSheet.create({
     borderRadius: 8,
   },
   grid: {
-    alignItems: "center",
     flex: 1,
+    alignItems: "center",
     flexDirection: "column",
     flexWrap: "wrap",
     paddingTop: 10,
@@ -348,13 +350,12 @@ const stylesPort = StyleSheet.create({
     flexDirection: "row",
   },
   gridColumns: {
-    width: "100%",
-    height: 550,
+    flex: 1,
     flexDirection: "row",
+    maxHeight: 400,
   },
   gridRounds: {
     width: "11%",
-    height: "100%",
   },
   gridContent: {
     flexWrap: "wrap",
@@ -367,8 +368,7 @@ const stylesPort = StyleSheet.create({
     justifyContent: "center",
   },
   scroller: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
   },
   title: {
     fontSize: 24,
