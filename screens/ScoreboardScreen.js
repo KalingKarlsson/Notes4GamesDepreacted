@@ -21,26 +21,27 @@ import * as scoreboardActions from "../store/scoreboard-actions";
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 
-const players = [
-  "Anton",
-  "Trisse",
-  "Totte",
-  "Kalle",
-  "Tess",
-  "Alice",
-  "Bob",
-  "Charlie",
-];
+const players = ["Anton", "Tess", "Alice", "Bob", "Charlie"];
 
 const ScoreboardScreen = (props) => {
   const [state, setState] = useState({
     inputData: [],
   });
 
-  const window = useWindowDimensions();
+  const pickedGame = props.navigation.getParam("gameName");
+  let gameRounds = 0;
 
-  let numOfBlankTilesSkumm = players.length * Skummeslöv.length;
-  let numOfBlankTilesLiverpool = players.length * Liverpool.length;
+  if (pickedGame === "Liverpool") {
+    gameRounds = Liverpool.length;
+  } else {
+    gameRounds = Skummeslöv.length;
+  }
+
+  const selectedAmountOfPlayers = props.navigation.getParam("playerAmount");
+
+  let numOfBlankTilesLiverpool = players.length * gameRounds;
+
+  const window = useWindowDimensions();
 
   const contentArrPort = () => {
     return [...Array(numOfBlankTilesLiverpool)].map((item, index) => (
@@ -116,7 +117,7 @@ const ScoreboardScreen = (props) => {
       const element = sortedInputArray[index]; //object of first index
       summary = summary + +element.text;
 
-      if ((index + 1) % 11 === 0) {
+      if ((index + 1) % gameRounds === 0) {
         scoresTotal.push(summary);
         summary = 0;
       }
@@ -175,7 +176,7 @@ const ScoreboardScreen = (props) => {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={stylesPort.screen}>
-          <Text style={stylesPort.title}>Skummeslöv</Text>
+          <Text style={stylesPort.title}>{pickedGame}</Text>
           <View style={stylesPort.grid}>
             <View style={stylesPort.gridPlayers}>
               <View style={stylesPort.gridItem}>
@@ -203,6 +204,7 @@ const ScoreboardScreen = (props) => {
               style={stylesPort.scroller}
               contentContainerStyle={{
                 alignItems: "center",
+                flexGrow: 1,
               }}
             >
               <View style={stylesPort.gridColumns}>

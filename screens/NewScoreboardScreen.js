@@ -4,28 +4,24 @@ import { Picker } from "@react-native-picker/picker";
 import Slider from "@react-native-community/slider";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import * as ScreenOrientation from "expo-screen-orientation";
-import { DeviceMotion } from "expo-sensors";
 
 import CustomButton from "../components/CustomButton";
-import GameInput from "../components/GameInput";
 import HeaderButton from "../components/HeaderButton";
 import * as scoreboardActions from "../store/scoreboard-actions";
 import Colors from "../constants/Colors";
 
 const NewScoreboardScreen = (props) => {
-  const [isPickedGame, setIsPickedGame] = useState("");
+  const [isPickedGame, setIsPickedGame] = useState("Liverpool");
   const [isPickedNumber, SetIsPickedNumber] = useState(3);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    isModalVisible === false
-      ? setIsModalVisible(true)
-      : setIsModalVisible(false);
-  };
 
   const createScoreboardHandler = () => {
-    props.navigation.navigate("Scoreboard");
+    props.navigation.navigate({
+      routeName: "Scoreboard",
+      params: {
+        gameName: isPickedGame,
+        playerAmount: isPickedNumber,
+      },
+    });
   };
 
   if (Platform.OS === "android") {
@@ -39,8 +35,8 @@ const NewScoreboardScreen = (props) => {
             onValueChange={(itemValue) => setIsPickedGame(itemValue)}
             itemStyle={styles.selectedItem}
           >
-            <Picker.Item label="Liverpool" value="pool" />
-            <Picker.Item label="Skummeslöv" value="löv" />
+            <Picker.Item label="Liverpool" value="Liverpool" />
+            <Picker.Item label="Skummeslöv" value="Skummeslöv" />
           </Picker>
           <View style={styles.inputContainer}>
             <Text style={styles.amountPlayers}>Amount of Players</Text>
