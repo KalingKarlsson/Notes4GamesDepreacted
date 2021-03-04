@@ -22,29 +22,34 @@ const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 
 const players = ["Anton", "Tess", "Alice", "Bob", "Charlie"];
+let pickedGame = "";
+let gameCounts = [];
 
 const ScoreboardScreen = (props) => {
   const [state, setState] = useState({
     inputData: [],
   });
 
-  const pickedGame = props.navigation.getParam("gameName");
-  let gameRounds = 0;
+  pickedGame = props.navigation.getParam("gameName");
 
   if (pickedGame === "Liverpool") {
-    gameRounds = Liverpool.length;
+    gameCounts = Liverpool;
   } else {
-    gameRounds = Skummeslöv.length;
+    gameCounts = Skummeslöv;
   }
+
+  console.log(pickedGame);
+
+  console.log(gameCounts);
 
   const selectedAmountOfPlayers = props.navigation.getParam("playerAmount");
 
-  let numOfBlankTilesLiverpool = players.length * gameRounds;
+  let numOfBlankTiles = players.length * gameCounts.length;
 
   const window = useWindowDimensions();
 
   const contentArrPort = () => {
-    return [...Array(numOfBlankTilesLiverpool)].map((item, index) => (
+    return [...Array(numOfBlankTiles)].map((item, index) => (
       <View style={stylesPort.gridItemCol} key={index}>
         <GridItem
           style={stylesPort.gridItemScore}
@@ -60,7 +65,7 @@ const ScoreboardScreen = (props) => {
   };
 
   const contentArrLand = () => {
-    return [...Array(numOfBlankTilesLiverpool)].map((item, index) => (
+    return [...Array(numOfBlankTiles)].map((item, index) => (
       <View style={stylesLand.gridItemCol} key={index}>
         <GridItem
           style={stylesLand.gridItemScore}
@@ -117,7 +122,7 @@ const ScoreboardScreen = (props) => {
       const element = sortedInputArray[index]; //object of first index
       summary = summary + +element.text;
 
-      if ((index + 1) % gameRounds === 0) {
+      if ((index + 1) % gameCounts.length === 0) {
         scoresTotal.push(summary);
         summary = 0;
       }
@@ -207,9 +212,15 @@ const ScoreboardScreen = (props) => {
                 flexGrow: 1,
               }}
             >
-              <View style={stylesPort.gridColumns}>
+              <View
+                style={
+                  pickedGame === "Liverpool"
+                    ? stylesPort.gridColumnsLiver
+                    : stylesPort.gridColumnsSkumm
+                }
+              >
                 <View style={stylesPort.gridRounds}>
-                  {Liverpool.map((item, key) => (
+                  {gameCounts.map((item, key) => (
                     <View style={stylesPort.gridItemCol} key={key}>
                       <GridItem
                         style={stylesPort.gridItemScore}
@@ -351,10 +362,15 @@ const stylesPort = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
   },
-  gridColumns: {
+  gridColumnsLiver: {
     flex: 1,
     flexDirection: "row",
-    maxHeight: 400,
+    height: 400,
+  },
+  gridColumnsSkumm: {
+    flex: 1,
+    flexDirection: "row",
+    height: 550,
   },
   gridRounds: {
     width: "11%",
