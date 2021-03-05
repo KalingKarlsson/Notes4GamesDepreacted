@@ -19,7 +19,7 @@ const NewScoreboardScreen = (props) => {
       routeName: "Scoreboard",
       params: {
         gameName: isPickedGame,
-        playerAmount: isPickedNumber,
+        playerAmount: Math.floor(isPickedNumber),
       },
     });
   };

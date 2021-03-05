@@ -21,9 +21,10 @@ import * as scoreboardActions from "../store/scoreboard-actions";
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 
-const players = ["Anton", "Tess", "Alice", "Bob", "Charlie"];
+const players = [];
 let pickedGame = "";
 let gameCounts = [];
+const playerCount = [];
 
 const ScoreboardScreen = (props) => {
   const [state, setState] = useState({
@@ -38,13 +39,16 @@ const ScoreboardScreen = (props) => {
     gameCounts = Skummeslöv;
   }
 
-  console.log(pickedGame);
-
-  console.log(gameCounts);
-
   const selectedAmountOfPlayers = props.navigation.getParam("playerAmount");
 
-  let numOfBlankTiles = players.length * gameCounts.length;
+  for (let i = 0; i < selectedAmountOfPlayers; i++) {
+    playerCount[i] = "Player " + (i + 1);
+  }
+
+  console.log(playerCount.length);
+  console.log(playerCount);
+
+  let numOfBlankTiles = selectedAmountOfPlayers * gameCounts.length;
 
   const window = useWindowDimensions();
 
@@ -128,8 +132,8 @@ const ScoreboardScreen = (props) => {
       }
     }
 
-    for (let i = 0; i < players.length; i++) {
-      const name = players[i]; //name of first player
+    for (let i = 0; i < playerCount.length; i++) {
+      const name = playerCount[i]; //name of first player
 
       for (let j = 0; j < scoresTotal.length; j++) {
         const playerSum = scoresTotal[j];
@@ -162,7 +166,7 @@ const ScoreboardScreen = (props) => {
       onPress={() => {
         Alert.alert(
           "Scores",
-          allPlayersDone.length === players.length
+          allPlayersDone.length === playerCount.length
             ? outputData()
             : "All players are not finished yet!",
           [
@@ -187,19 +191,21 @@ const ScoreboardScreen = (props) => {
               <View style={stylesPort.gridItem}>
                 <Text style={stylesPort.gridItemScore}></Text>
               </View>
-              {players.map((item, key) => (
+              {[...Array(selectedAmountOfPlayers)].map((item, key) => (
                 <View style={stylesPort.gridItem} key={key}>
                   <GridItem
                     style={stylesPort.gridItemScore}
                     blurOnSubmit
-                    editable={false}
+                    editable={true}
                     autoCapitalize="none"
                     autoCorrect={false}
                     key={key}
                     value={item}
                     maxLength={4}
                     numberOfLines={1}
+                    onChangeText={() => {}} //todo
                     textContentType="name"
+                    placeholder="Name" //not working
                   />
                 </View>
               ))}
@@ -251,7 +257,7 @@ const ScoreboardScreen = (props) => {
               <View style={stylesLand.gridItem}>
                 <Text style={stylesLand.gridItemScore}></Text>
               </View>
-              {players.map((item, key) => (
+              {playerCount.map((item, key) => (
                 <View style={stylesLand.gridItem} key={key}>
                   <GridItem
                     style={stylesLand.gridItemScore}
