@@ -19,7 +19,7 @@ const NewScoreboardScreen = (props) => {
       routeName: "Scoreboard",
       params: {
         gameName: isPickedGame,
-        playerAmount: Math.floor(isPickedNumber),
+        playerAmount: parseInt(isPickedNumber.toPrecision(1)),
       },
     });
   };
@@ -51,8 +51,9 @@ const NewScoreboardScreen = (props) => {
               minimumTrackTintColor={Colors.blue}
               maximumTrackTintColor={Colors.grey}
               thumbTintColor={Colors.black}
+              tapToSeek={true}
             ></Slider>
-            <Text style={styles.number}>{isPickedNumber.toFixed(0)}</Text>
+            <Text style={styles.number}>{isPickedNumber.toPrecision(1)}</Text>
             <View style={styles.createScoreboardButton}>
               <CustomButton
                 title="Create Scoreboard"
