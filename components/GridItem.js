@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 
 const GridItem = (props) => {
-  return <TextInput {...props} placeholder={""} style={styles.input} />;
+  return <TextInput {...props} style={styles.input} />;
 };
 
 const styles = StyleSheet.create({

@@ -6,7 +6,6 @@ import {
   Text,
   ScrollView,
   Keyboard,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Alert,
   useWindowDimensions,
@@ -21,14 +20,15 @@ import * as scoreboardActions from "../store/scoreboard-actions";
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 
-const players = [];
 let pickedGame = "";
 let gameCounts = [];
-const playerCount = [];
 
 const ScoreboardScreen = (props) => {
   const [state, setState] = useState({
     inputData: [],
+  });
+  const [playerNum, setPlayerNum] = useState({
+    playerCount: [],
   });
 
   pickedGame = props.navigation.getParam("gameName");
@@ -40,13 +40,6 @@ const ScoreboardScreen = (props) => {
   }
 
   const selectedAmountOfPlayers = props.navigation.getParam("playerAmount");
-
-  for (let i = 0; i < selectedAmountOfPlayers; i++) {
-    playerCount[i] = "Player " + (i + 1);
-  }
-
-  console.log(playerCount.length);
-  console.log(playerCount);
 
   let numOfBlankTiles = selectedAmountOfPlayers * gameCounts.length;
 
@@ -82,6 +75,31 @@ const ScoreboardScreen = (props) => {
         />
       </View>
     ));
+  };
+
+  const addPlayerNames = (name, index) => {
+    let nameArray = playerNum.playerCount;
+    let checkBool = false;
+
+    if (nameArray.length !== 0) {
+      nameArray.forEach((element) => {
+        if (element.index === index) {
+          element.text = name;
+          checkBool = true;
+        }
+      });
+    }
+
+    if (checkBool) {
+      setPlayerNum({
+        playerCount: nameArray,
+      });
+    } else {
+      nameArray.push({ text: name, index: index });
+      setPlayerNum({
+        playerCount: nameArray,
+      });
+    }
   };
 
   const addValues = (text, index) => {
@@ -132,8 +150,8 @@ const ScoreboardScreen = (props) => {
       }
     }
 
-    for (let i = 0; i < playerCount.length; i++) {
-      const name = playerCount[i]; //name of first player
+    for (let i = 0; i < playerNum.playerCount.length; i++) {
+      const name = playerNum.playerCount[i].text; //name of first player
 
       for (let j = 0; j < scoresTotal.length; j++) {
         const playerSum = scoresTotal[j];
@@ -149,16 +167,22 @@ const ScoreboardScreen = (props) => {
     });
 
     let finalResults = "";
+    const finalResultsTotal = [];
     for (let k = 0; k < results.length; k++) {
       const element = results[k];
-      finalResults += k + 1 + ": " + element.name + " " + element.sum + "\n";
+      finalResults = k + 1 + ": " + element.name + " " + element.sum + "\n";
+      finalResultsTotal.push(finalResults); //value for message cannot be cast from readableNativeArray to string
     }
 
-    console.log(finalResults);
-    return finalResults;
+    console.log("final res tot \n" + finalResultsTotal);
+    console.log(finalResultsTotal.length);
+
+    return finalResultsTotal;
   };
 
   const allPlayersDone = outputData();
+  console.log("allplayersdone: " + allPlayersDone.length);
+  console.log("playercount: " + playerNum.playerCount.length);
 
   const scoresDialog = (
     <CustomButton
@@ -166,7 +190,7 @@ const ScoreboardScreen = (props) => {
       onPress={() => {
         Alert.alert(
           "Scores",
-          allPlayersDone.length === playerCount.length
+          allPlayersDone.length === playerNum.playerCount.length
             ? outputData()
             : "All players are not finished yet!",
           [
@@ -191,21 +215,19 @@ const ScoreboardScreen = (props) => {
               <View style={stylesPort.gridItem}>
                 <Text style={stylesPort.gridItemScore}></Text>
               </View>
-              {[...Array(selectedAmountOfPlayers)].map((item, key) => (
-                <View style={stylesPort.gridItem} key={key}>
+              {[...Array(selectedAmountOfPlayers)].map((item, index) => (
+                <View style={stylesPort.gridItem} key={index}>
                   <GridItem
                     style={stylesPort.gridItemScore}
-                    blurOnSubmit
-                    editable={true}
+                    placeHolder="Name"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    key={key}
+                    key={index}
                     value={item}
-                    maxLength={4}
+                    maxLength={5}
                     numberOfLines={1}
-                    onChangeText={() => {}} //todo
+                    onChangeText={(text) => addPlayerNames(text, index)} //todo
                     textContentType="name"
-                    placeholder="Name" //not working
                   />
                 </View>
               ))}
@@ -230,10 +252,10 @@ const ScoreboardScreen = (props) => {
                     <View style={stylesPort.gridItemCol} key={key}>
                       <GridItem
                         style={stylesPort.gridItemScore}
-                        blurOnSubmit
                         editable={false}
                         key={key}
                         value={item}
+                        blurOnSubmit
                       />
                     </View>
                   ))}
@@ -257,7 +279,7 @@ const ScoreboardScreen = (props) => {
               <View style={stylesLand.gridItem}>
                 <Text style={stylesLand.gridItemScore}></Text>
               </View>
-              {playerCount.map((item, key) => (
+              {[...Array(selectedAmountOfPlayers)].map((item, key) => (
                 <View style={stylesLand.gridItem} key={key}>
                   <GridItem
                     style={stylesLand.gridItemScore}
