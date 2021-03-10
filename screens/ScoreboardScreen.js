@@ -150,6 +150,8 @@ const ScoreboardScreen = (props) => {
       }
     }
 
+    console.log(scoresTotal);
+
     for (let i = 0; i < playerNum.playerCount.length; i++) {
       const name = playerNum.playerCount[i].text; //name of first player
 
@@ -162,6 +164,7 @@ const ScoreboardScreen = (props) => {
       }
     }
 
+    console.log(results);
     results.sort(function (a, b) {
       return a.sum - b.sum;
     });
@@ -170,19 +173,45 @@ const ScoreboardScreen = (props) => {
     const finalResultsTotal = [];
     for (let k = 0; k < results.length; k++) {
       const element = results[k];
-      finalResults = k + 1 + ": " + element.name + " " + element.sum + "\n";
-      finalResultsTotal.push(finalResults); //value for message cannot be cast from readableNativeArray to string
+      //finalResults = k + 1 + ": " + element.name + " " + element.sum + "\n";
+      finalResultsTotal.push({
+        place: k + 1,
+        name: element.name,
+        score: element.sum,
+      }); //value for message cannot be cast from readableNativeArray to string
     }
 
-    console.log("final res tot \n" + finalResultsTotal);
-    console.log(finalResultsTotal.length);
+    console.log(finalResultsTotal);
 
     return finalResultsTotal;
   };
 
   const allPlayersDone = outputData();
-  console.log("allplayersdone: " + allPlayersDone.length);
-  console.log("playercount: " + playerNum.playerCount.length);
+  //console.log("allplayersdone: " + allPlayersDone.length);
+  //console.log("playercount: " + playerNum.playerCount.length);
+
+  const printFinalScores = () => {
+    const finalScores = outputData();
+    let place = "";
+    let name = "";
+    let score = "";
+    let rows = "";
+
+    for (let i = 0; i < finalScores.length; i++) {
+      const element = finalScores[i];
+      rows +=
+        element.place + ": " + element.name + "    " + element.score + "\n";
+    }
+    console.log(rows);
+
+    /*     console.log(
+      finalScores.map((key, item) => {
+        <Text key={key}>{item}</Text>;
+      })
+    ); */
+
+    return rows;
+  };
 
   const scoresDialog = (
     <CustomButton
@@ -191,7 +220,7 @@ const ScoreboardScreen = (props) => {
         Alert.alert(
           "Scores",
           allPlayersDone.length === playerNum.playerCount.length
-            ? outputData()
+            ? printFinalScores()
             : "All players are not finished yet!",
           [
             {
