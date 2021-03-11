@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
   useWindowDimensions,
+  FlatList,
+  SafeAreaView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -150,8 +152,6 @@ const ScoreboardScreen = (props) => {
       }
     }
 
-    console.log(scoresTotal);
-
     for (let i = 0; i < playerNum.playerCount.length; i++) {
       const name = playerNum.playerCount[i].text; //name of first player
 
@@ -164,21 +164,18 @@ const ScoreboardScreen = (props) => {
       }
     }
 
-    console.log(results);
     results.sort(function (a, b) {
       return a.sum - b.sum;
     });
 
-    let finalResults = "";
     const finalResultsTotal = [];
     for (let k = 0; k < results.length; k++) {
       const element = results[k];
-      //finalResults = k + 1 + ": " + element.name + " " + element.sum + "\n";
       finalResultsTotal.push({
         place: k + 1,
         name: element.name,
         score: element.sum,
-      }); //value for message cannot be cast from readableNativeArray to string
+      });
     }
 
     console.log(finalResultsTotal);
@@ -187,14 +184,9 @@ const ScoreboardScreen = (props) => {
   };
 
   const allPlayersDone = outputData();
-  //console.log("allplayersdone: " + allPlayersDone.length);
-  //console.log("playercount: " + playerNum.playerCount.length);
 
   const printFinalScores = () => {
     const finalScores = outputData();
-    let place = "";
-    let name = "";
-    let score = "";
     let rows = "";
 
     for (let i = 0; i < finalScores.length; i++) {
@@ -202,14 +194,6 @@ const ScoreboardScreen = (props) => {
       rows +=
         element.place + ": " + element.name + "    " + element.score + "\n";
     }
-    console.log(rows);
-
-    /*     console.log(
-      finalScores.map((key, item) => {
-        <Text key={key}>{item}</Text>;
-      })
-    ); */
-
     return rows;
   };
 
@@ -233,6 +217,18 @@ const ScoreboardScreen = (props) => {
       }}
     />
   );
+
+  const renderItem = ({ item, key }) => {
+    <View style={stylesPort.gridItemCol} key={key}>
+      <GridItem
+        style={stylesPort.gridItemScore}
+        editable={false}
+        key={key}
+        value={item}
+        blurOnSubmit
+      />
+    </View>;
+  };
 
   if (window.height > window.width) {
     return (
@@ -262,38 +258,40 @@ const ScoreboardScreen = (props) => {
               ))}
             </View>
 
-            <ScrollView
-              style={stylesPort.scroller}
-              contentContainerStyle={{
-                alignItems: "center",
-                flexGrow: 1,
-              }}
-            >
-              <View
-                style={
-                  pickedGame === "Liverpool"
-                    ? stylesPort.gridColumnsLiver
-                    : stylesPort.gridColumnsSkumm
-                }
-              >
-                <View style={stylesPort.gridRounds}>
-                  {gameCounts.map((item, key) => (
-                    <View style={stylesPort.gridItemCol} key={key}>
-                      <GridItem
-                        style={stylesPort.gridItemScore}
-                        editable={false}
-                        key={key}
-                        value={item}
-                        blurOnSubmit
-                      />
-                    </View>
-                  ))}
-                </View>
+            <SafeAreaView style={stylesPort.scroller2}>
+              {/*               <FlatList
+                data={gameCounts}
+                renderItem={renderItem}
+                keyExtractor={(item) => item}
+              /> */}
 
-                <View style={stylesPort.gridContent}>{contentArrPort()}</View>
-              </View>
-            </ScrollView>
-            <View style={stylesPort.button}>{scoresDialog}</View>
+              <ScrollView style={stylesPort.scroller} scrollEnabled={true}>
+                <View
+                  style={
+                    pickedGame === "Liverpool"
+                      ? stylesPort.gridColumnsLiver
+                      : stylesPort.gridColumnsSkumm
+                  }
+                >
+                  <View style={stylesPort.gridRounds}>
+                    {gameCounts.map((item, key) => (
+                      <View style={stylesPort.gridItemCol} key={key}>
+                        <GridItem
+                          style={stylesPort.gridItemScore}
+                          editable={false}
+                          key={key}
+                          value={item}
+                          blurOnSubmit
+                        />
+                      </View>
+                    ))}
+                  </View>
+
+                  <View style={stylesPort.gridContent}>{contentArrPort()}</View>
+                </View>
+              </ScrollView>
+              <View style={stylesPort.button}>{scoresDialog}</View>
+            </SafeAreaView>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -387,7 +385,6 @@ const stylesPort = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     flexDirection: "column",
-    flexWrap: "wrap",
     paddingTop: 10,
   },
   gridItem: {
@@ -440,10 +437,13 @@ const stylesPort = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     alignItems: "center",
-    justifyContent: "center",
   },
   scroller: {
+    backgroundColor: Colors.accent,
+  },
+  scroller2: {
     flex: 1,
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
