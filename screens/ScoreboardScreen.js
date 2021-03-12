@@ -383,7 +383,6 @@ const stylesPort = StyleSheet.create({
   },
   grid: {
     flex: 1,
-    alignItems: "center",
     flexDirection: "column",
     paddingTop: 10,
   },

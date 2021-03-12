@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Platform, View, Text, Button } from "react-native";
+import { StyleSheet, Platform, View, Text, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Slider from "@react-native-community/slider";
-import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomButton from "../components/CustomButton";
 import HeaderButton from "../components/HeaderButton";
-import * as scoreboardActions from "../store/scoreboard-actions";
 import Colors from "../constants/Colors";
 
 const NewScoreboardScreen = (props) => {
@@ -24,62 +22,20 @@ const NewScoreboardScreen = (props) => {
     });
   };
 
-  if (Platform.OS === "android") {
-    return (
-      <View style={styles.mainContainer}>
-        <View style={styles.contentAndroid}>
-          <Text style={styles.title}>Select Game</Text>
-          <Picker
-            selectedValue={isPickedGame}
-            style={styles.pickerContainerAndroid}
-            onValueChange={(itemValue) => setIsPickedGame(itemValue)}
-            itemStyle={styles.selectedItem}
-          >
-            <Picker.Item label="Liverpool" value="Liverpool" />
-            <Picker.Item label="Skummeslöv" value="Skummeslöv" />
-          </Picker>
-          <View style={styles.inputContainer}>
-            <Text style={styles.amountPlayers}>Amount of Players</Text>
-            <Slider
-              value={isPickedNumber}
-              minimumValue={2}
-              maximumValue={8}
-              onValueChange={(number) => {
-                SetIsPickedNumber(number);
-              }}
-              style={styles.numPicker}
-              minimumTrackTintColor={Colors.blue}
-              maximumTrackTintColor={Colors.grey}
-              thumbTintColor={Colors.black}
-              tapToSeek={true}
-            ></Slider>
-            <Text style={styles.number}>{isPickedNumber.toPrecision(1)}</Text>
-            <View style={styles.createScoreboardButton}>
-              <CustomButton
-                title="Create Scoreboard"
-                onPress={() => {
-                  createScoreboardHandler();
-                }}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-    );
-  } else {
-    return (
-      <View style={styles.mainContainer}>
-        <View style={styles.content}>
-          <Text style={styles.title}>Select Game</Text>
-          <Picker
-            selectedValue={isPickedGame}
-            style={styles.pickerContainer}
-            onValueChange={(itemValue) => setIsPickedGame(itemValue)}
-            itemStyle={styles.selectedItem}
-          >
-            <Picker.Item label="Liverpool" value="pool" />
-            <Picker.Item label="Skummeslöv" value="löv" />
-          </Picker>
+  return (
+    <ScrollView style={styles.mainContainer}>
+      <View style={styles.content}>
+        <Text style={styles.title}>Select Game</Text>
+        <Picker
+          selectedValue={isPickedGame}
+          style={styles.pickerContainerAndroid}
+          onValueChange={(itemValue) => setIsPickedGame(itemValue)}
+          itemStyle={styles.selectedItem}
+        >
+          <Picker.Item label="Liverpool" value="Liverpool" />
+          <Picker.Item label="Skummeslöv" value="Skummeslöv" />
+        </Picker>
+        <View style={styles.inputContainer}>
           <Text style={styles.amountPlayers}>Amount of Players</Text>
           <Slider
             value={isPickedNumber}
@@ -92,8 +48,9 @@ const NewScoreboardScreen = (props) => {
             minimumTrackTintColor={Colors.blue}
             maximumTrackTintColor={Colors.grey}
             thumbTintColor={Colors.black}
+            tapToSeek={true}
           ></Slider>
-          <Text style={styles.number}>{isPickedNumber.toFixed(0)}</Text>
+          <Text style={styles.number}>{isPickedNumber.toPrecision(1)}</Text>
           <View style={styles.createScoreboardButton}>
             <CustomButton
               title="Create Scoreboard"
@@ -104,8 +61,8 @@ const NewScoreboardScreen = (props) => {
           </View>
         </View>
       </View>
-    );
-  }
+    </ScrollView>
+  );
 };
 
 NewScoreboardScreen.navigationOptions = (navData) => {
@@ -114,7 +71,7 @@ NewScoreboardScreen.navigationOptions = (navData) => {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Save"
+          title="Info"
           iconName={
             Platform.OS === "android"
               ? "md-information-circle-outline"
@@ -134,10 +91,7 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: "center",
-  },
-  contentAndroid: {
-    alignItems: "center",
-    marginTop: "10%",
+    marginTop: Platform.OS === "android" ? "10%" : 0,
   },
   createScoreboardButton: {
     backgroundColor: Colors.ceruleancrayola,
@@ -155,8 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   mainContainer: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
     backgroundColor: Colors.white,
   },
   number: {
@@ -169,7 +122,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     alignItems: "center",
     width: "100%",
-    marginTop: "15%",
+    marginTop: Platform.OS === "android" ? "15%" : 0,
   },
   item: {
     color: Colors.black,

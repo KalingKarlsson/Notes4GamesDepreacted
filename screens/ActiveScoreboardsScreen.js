@@ -1,18 +1,18 @@
 import React from "react";
 import { StyleSheet, Platform, View, Text, ScrollView } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { LinearGradient } from "expo-linear-gradient";
 
 import HeaderButton from "../components/HeaderButton";
-import * as scoreboardActions from "../store/scoreboard-actions";
 import Colors from "../constants/Colors";
 
 const ActiveScoreboardsScreen = (props) => {
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ alignItems: "center" }}
+    >
       <Text style={styles.title}>Your Active Games</Text>
-      <ScrollView style={styles.scrollView}>
+      <View style={styles.content}>
         <View style={styles.listContainer}>
           <View>
             <View style={styles.listItem}>
@@ -62,8 +62,8 @@ const ActiveScoreboardsScreen = (props) => {
             </View>
           </View>
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -91,17 +91,11 @@ ActiveScoreboardsScreen.navigationOptions = (navData) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    alignContent: "center",
+    flex: 1,
     backgroundColor: "white",
   },
-  gradient: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+  content: {
+    maxWidth: 350,
   },
   listContainer: {
     alignItems: "center",
@@ -130,10 +124,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: "open-sans",
     color: Colors.black,
-  },
-  scrollView: {
-    width: "80%",
-    maxWidth: 350,
   },
   title: {
     fontSize: 28,
