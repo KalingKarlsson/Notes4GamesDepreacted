@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
   Alert,
   useWindowDimensions,
-  FlatList,
   SafeAreaView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -218,18 +217,6 @@ const ScoreboardScreen = (props) => {
     />
   );
 
-  const renderItem = ({ item, key }) => {
-    <View style={stylesPort.gridItemCol} key={key}>
-      <GridItem
-        style={stylesPort.gridItemScore}
-        editable={false}
-        key={key}
-        value={item}
-        blurOnSubmit
-      />
-    </View>;
-  };
-
   if (window.height > window.width) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -259,12 +246,6 @@ const ScoreboardScreen = (props) => {
             </View>
 
             <SafeAreaView style={stylesPort.scroller2}>
-              {/*               <FlatList
-                data={gameCounts}
-                renderItem={renderItem}
-                keyExtractor={(item) => item}
-              /> */}
-
               <ScrollView style={stylesPort.scroller} scrollEnabled={true}>
                 <View
                   style={
@@ -273,7 +254,7 @@ const ScoreboardScreen = (props) => {
                       : stylesPort.gridColumnsSkumm
                   }
                 >
-                  <View style={stylesPort.gridRounds}>
+                  <View>
                     {gameCounts.map((item, key) => (
                       <View style={stylesPort.gridItemCol} key={key}>
                         <GridItem
@@ -290,8 +271,8 @@ const ScoreboardScreen = (props) => {
                   <View style={stylesPort.gridContent}>{contentArrPort()}</View>
                 </View>
               </ScrollView>
-              <View style={stylesPort.button}>{scoresDialog}</View>
             </SafeAreaView>
+            <View style={stylesPort.button}>{scoresDialog}</View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -385,6 +366,7 @@ const stylesPort = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     paddingTop: 10,
+    alignItems: "center",
   },
   gridItem: {
     width: "11.1%",
@@ -399,6 +381,7 @@ const stylesPort = StyleSheet.create({
   },
   gridItemCol: {
     height: 50,
+
     width: Platform.OS === "android" ? 40 : 41.6,
     backgroundColor: Colors.white,
 
@@ -418,19 +401,15 @@ const stylesPort = StyleSheet.create({
   gridColumnsLiver: {
     flex: 1,
     flexDirection: "row",
-    height: 400,
+    maxHeight: 400,
   },
   gridColumnsSkumm: {
     flex: 1,
     flexDirection: "row",
-    height: 550,
-  },
-  gridRounds: {
-    width: "11%",
+    maxHeight: 550,
   },
   gridContent: {
     flexWrap: "wrap",
-    width: "89%",
   },
   screen: {
     flex: 1,
@@ -438,11 +417,10 @@ const stylesPort = StyleSheet.create({
     alignItems: "center",
   },
   scroller: {
-    backgroundColor: Colors.accent,
+    flex: 1,
   },
   scroller2: {
     flex: 1,
-    alignItems: "center",
   },
   title: {
     fontSize: 24,
