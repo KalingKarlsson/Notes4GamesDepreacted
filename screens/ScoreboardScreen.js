@@ -231,7 +231,7 @@ const ScoreboardScreen = (props) => {
                 <View style={stylesPort.gridItem} key={index}>
                   <GridItem
                     style={stylesPort.gridItemScore}
-                    placeHolder="Name"
+                    placeholder="Name"
                     autoCapitalize="none"
                     autoCorrect={false}
                     key={index}
