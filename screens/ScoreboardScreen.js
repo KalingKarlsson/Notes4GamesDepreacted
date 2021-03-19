@@ -217,20 +217,29 @@ const ScoreboardScreen = (props) => {
     />
   );
 
+  const getStyleSheet = () => {
+    let stylesheet;
+    window.height > window.width
+      ? (stylesheet = stylesPort)
+      : (stylesheet = stylesLand);
+    return stylesheet;
+  };
+
+  const selectedStyle = getStyleSheet();
   if (window.height > window.width) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={stylesPort.screen}>
-          <Text style={stylesPort.title}>{pickedGame}</Text>
-          <View style={stylesPort.grid}>
-            <View style={stylesPort.gridPlayers}>
-              <View style={stylesPort.gridItem}>
-                <Text style={stylesPort.gridItemScore}></Text>
+        <View style={selectedStyle.screen}>
+          <Text style={selectedStyle.title}>{pickedGame}</Text>
+          <View style={selectedStyle.grid}>
+            <View style={selectedStyle.gridPlayers}>
+              <View style={selectedStyle.gridItem}>
+                <Text style={selectedStyle.gridItemScore}></Text>
               </View>
               {[...Array(selectedAmountOfPlayers)].map((item, index) => (
-                <View style={stylesPort.gridItem} key={index}>
+                <View style={selectedStyle.gridItem} key={index}>
                   <GridItem
-                    style={stylesPort.gridItemScore}
+                    style={selectedStyle.gridItemScore}
                     placeholder="Name"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -238,41 +247,41 @@ const ScoreboardScreen = (props) => {
                     value={item}
                     maxLength={5}
                     numberOfLines={1}
-                    onChangeText={(text) => addPlayerNames(text, index)} //todo
+                    onChangeText={(text) => addPlayerNames(text, index)}
                     textContentType="name"
                   />
                 </View>
               ))}
             </View>
 
-            <SafeAreaView style={stylesPort.scroller2}>
-              <ScrollView style={stylesPort.scroller} scrollEnabled={true}>
-                <View
-                  style={
-                    pickedGame === "Liverpool"
-                      ? stylesPort.gridColumnsLiver
-                      : stylesPort.gridColumnsSkumm
-                  }
-                >
-                  <View>
-                    {gameCounts.map((item, key) => (
-                      <View style={stylesPort.gridItemCol} key={key}>
-                        <GridItem
-                          style={stylesPort.gridItemScore}
-                          editable={false}
-                          key={key}
-                          value={item}
-                          blurOnSubmit
-                        />
-                      </View>
-                    ))}
-                  </View>
-
-                  <View style={stylesPort.gridContent}>{contentArrPort()}</View>
+            <ScrollView style={selectedStyle.scroller}>
+              <View
+                style={
+                  pickedGame === "Liverpool"
+                    ? selectedStyle.gridColumnsLiver
+                    : selectedStyle.gridColumnsSkumm
+                }
+              >
+                <View>
+                  {gameCounts.map((item, key) => (
+                    <View style={selectedStyle.gridItemCol} key={key}>
+                      <GridItem
+                        style={selectedStyle.gridItemScore}
+                        editable={false}
+                        key={key}
+                        value={item}
+                        blurOnSubmit
+                      />
+                    </View>
+                  ))}
                 </View>
-              </ScrollView>
-            </SafeAreaView>
-            <View style={stylesPort.button}>{scoresDialog}</View>
+
+                <View style={selectedStyle.gridContent}>
+                  {contentArrPort()}
+                </View>
+              </View>
+            </ScrollView>
+            <View style={selectedStyle.button}>{scoresDialog}</View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -280,41 +289,44 @@ const ScoreboardScreen = (props) => {
   } else {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={stylesLand.screen}>
-          <Text style={stylesLand.title}>Skummeslöv</Text>
-          <View style={stylesLand.grid}>
-            <View style={stylesLand.gridPlayers}>
-              <View style={stylesLand.gridItem}>
-                <Text style={stylesLand.gridItemScore}></Text>
+        <View style={selectedStyle.screen}>
+          <Text style={selectedStyle.title}>{pickedGame}</Text>
+          <View style={selectedStyle.grid}>
+            <View style={selectedStyle.gridPlayers}>
+              <View style={selectedStyle.gridItem}>
+                <Text style={selectedStyle.gridItemScore}></Text>
               </View>
-              {[...Array(selectedAmountOfPlayers)].map((item, key) => (
-                <View style={stylesLand.gridItem} key={key}>
+              {[...Array(selectedAmountOfPlayers)].map((item, index) => (
+                <View style={selectedStyle.gridItem} key={index}>
                   <GridItem
-                    style={stylesLand.gridItemScore}
-                    blurOnSubmit
-                    editable={false}
+                    style={selectedStyle.gridItemScore}
+                    placeholder="Name"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    key={key}
+                    key={index}
                     value={item}
-                    maxLength={4}
+                    maxLength={5}
                     numberOfLines={1}
+                    onChangeText={(text) => addPlayerNames(text, index)}
                     textContentType="name"
                   />
                 </View>
               ))}
             </View>
 
-            <ScrollView
-              style={stylesLand.scroller}
-              contentContainerStyle={{ alignItems: "center" }}
-            >
-              <View style={stylesLand.gridColumns}>
-                <View style={stylesLand.gridRounds}>
-                  {Skummeslöv.map((item, key) => (
-                    <View style={stylesLand.gridItemCol} key={key}>
+            <ScrollView style={selectedStyle.scroller}>
+              <View
+                style={
+                  pickedGame === "Liverpool"
+                    ? selectedStyle.gridColumnsLiver
+                    : selectedStyle.gridColumnsSkumm
+                }
+              >
+                <View>
+                  {gameCounts.map((item, key) => (
+                    <View style={selectedStyle.gridItemCol} key={key}>
                       <GridItem
-                        style={stylesLand.gridItemScore}
+                        style={selectedStyle.gridItemScore}
                         blurOnSubmit
                         editable={false}
                         key={key}
@@ -323,12 +335,12 @@ const ScoreboardScreen = (props) => {
                     </View>
                   ))}
                 </View>
-
-                <View style={stylesLand.gridContent}>{contentArrLand()}</View>
+                <View style={selectedStyle.gridContent}>
+                  {contentArrLand()}
+                </View>
               </View>
-
-              <View style={stylesLand.button}>{scoresDialog}</View>
             </ScrollView>
+            <View style={selectedStyle.button}>{scoresDialog}</View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -454,6 +466,7 @@ const stylesLand = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     flexWrap: "wrap",
+    alignItems: "center",
     paddingHorizontal: 50,
     paddingTop: 10,
   },
@@ -491,18 +504,21 @@ const stylesLand = StyleSheet.create({
     height: "20%",
     flexDirection: "row",
   },
-  gridColumns: {
+  gridColumnsLiver: {
+    height: 400,
+    flexDirection: "row",
+    width: "100%",
+  },
+  gridColumnsSkumm: {
     height: 550,
     flexDirection: "row",
     width: "100%",
   },
   gridRounds: {
-    width: "11%",
     height: "100%",
   },
   gridContent: {
     flexWrap: "wrap",
-    width: "89%",
   },
   screen: {
     flex: 1,
