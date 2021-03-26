@@ -1,8 +1,17 @@
 import React from "react";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import ReduxThunk from "redux-thunk";
 
 import NotesNavigator from "./navigation/NotesNavigator";
+import scoreboardReducer from "./store/reducers/scoreboard-reducer";
+
+const rootReducer = combineReducers({
+  scoreboards: scoreboardReducer,
+});
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -13,5 +22,9 @@ export default function App() {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
-  return <NotesNavigator />;
+  return (
+    <Provider store={store}>
+      <NotesNavigator />
+    </Provider>
+  );
 }

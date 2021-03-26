@@ -42,7 +42,6 @@ const HistoryNavigator = createStackNavigator(
   {
     History: HistoryScreen,
     GameHistory: GameHistoryScreen,
-    ActiveScoreboards: ActiveScoreboardsScreen,
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,

@@ -9,14 +9,13 @@ import {
   TouchableWithoutFeedback,
   Alert,
   useWindowDimensions,
-  SafeAreaView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import CustomButton from "../components/CustomButton";
 import GridItem from "../components/GridItem";
 import Colors from "../constants/Colors";
-import * as scoreboardActions from "../store/scoreboard-actions";
+import * as scoreboardsActions from "../store/actions/scoreboard-actions";
 
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
@@ -40,11 +39,20 @@ const ScoreboardScreen = (props) => {
     gameCounts = Skummeslöv;
   }
 
+  const dispatch = useDispatch();
+  //const availablePlayers = useSelector((state) => state.scoreboard.players);
+
   const selectedAmountOfPlayers = props.navigation.getParam("playerAmount");
 
   let numOfBlankTiles = selectedAmountOfPlayers * gameCounts.length;
 
   const window = useWindowDimensions();
+
+  const saveScoreboardHandler = () => {
+    const finsishedGame = scoreboardsActions.addScoreboard(pickedGame);
+    console.log(finsishedGame); // correct data
+    dispatch(finsishedGame);
+  };
 
   const contentArrPort = () => {
     return [...Array(numOfBlankTiles)].map((item, index) => (
@@ -176,9 +184,6 @@ const ScoreboardScreen = (props) => {
         score: element.sum,
       });
     }
-
-    console.log(finalResultsTotal);
-
     return finalResultsTotal;
   };
 
@@ -193,6 +198,7 @@ const ScoreboardScreen = (props) => {
       rows +=
         element.place + ": " + element.name + "    " + element.score + "\n";
     }
+    saveScoreboardHandler();
     return rows;
   };
 
@@ -350,7 +356,7 @@ const ScoreboardScreen = (props) => {
 
 ScoreboardScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Notes4Games",
+    headerTitle: navData.navigation.getParam("scoreboardTitle"),
   };
 };
 

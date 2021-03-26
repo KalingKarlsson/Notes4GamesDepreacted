@@ -1,11 +1,22 @@
 import React from "react";
-import { StyleSheet, Platform, View, Text, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Platform,
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useSelector } from "react-redux";
 
 import HeaderButton from "../components/HeaderButton";
+import ScoreboardItem from "../components/ScoreboardItem";
 import Colors from "../constants/Colors";
 
 const ActiveScoreboardsScreen = (props) => {
+  const scoreboards = useSelector((state) => state.scoreboards.scoreboards);
+
   return (
     <ScrollView
       style={styles.container}
@@ -17,48 +28,6 @@ const ActiveScoreboardsScreen = (props) => {
           <View>
             <View style={styles.listItem}>
               <Text style={styles.listItemText}>1. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>2. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>3. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>4. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>5. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>6. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>7. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>8. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>9. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>10. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>11. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>12. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>13. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>14. Liverpool 2021-08-13</Text>
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.listItemText}>15. Liverpool 2021-08-13</Text>
             </View>
           </View>
         </View>
