@@ -49,9 +49,7 @@ const ScoreboardScreen = (props) => {
   const window = useWindowDimensions();
 
   const saveScoreboardHandler = () => {
-    const finsishedGame = scoreboardsActions.addScoreboard(pickedGame);
-    console.log(finsishedGame); // correct data
-    dispatch(finsishedGame);
+    dispatch(scoreboardsActions.addScoreboard(pickedGame, outputData()));
   };
 
   const contentArrPort = () => {

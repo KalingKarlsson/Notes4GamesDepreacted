@@ -10,33 +10,44 @@ const HistoryScreen = (props) => {
   console.log(scoreboards);
 
   /*
-    Scoreboard {
-    "date": undefined,
-    "id": "Liverpool",
-    "title": "26/03/2021",
-  },
+    Array [
+  Scoreboard {
+    "date": "29/03/2021",
+    "scores": Array [
+      Object {
+        "name": "anton",
+        "place": 1,
+        "score": 16,
+      },
+      Object {
+        "name": "kalle",
+        "place": 2,
+        "score": 40,
+      },
+    ],
+    "title": "Liverpool",
+  }
   */
 
   return (
     <View style={styles.container}>
       <FlatList
         data={scoreboards}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(itemData) => itemData.id}
         renderItem={(itemData) => (
-          console.log(itemData.item.title), // is adte???
-          console.log(itemData.item.date), // undefined??
-          (
-            <ScoreboardItem
-              title={itemData.item.title}
-              date={itemData.item.date}
-              onSelect={() => {
-                props.navigation.navigate("GameHistory", {
-                  scoreboardTitle: itemData.item.title,
-                  scoreboardId: itemData.item.id,
-                });
-              }}
-            />
-          )
+          <ScoreboardItem
+            key={itemData.item.id}
+            id={itemData.item.id}
+            title={itemData.item.title}
+            date={itemData.item.date}
+            onSelect={() => {
+              props.navigation.navigate("GameHistory", {
+                scoreboardTitle: itemData.item.title,
+                scoreboardId: itemData.item.date,
+                scoreboardScores: itemData.item.scores,
+              });
+            }}
+          />
         )}
       />
     </View>

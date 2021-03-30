@@ -10,7 +10,8 @@ export default (state = initialState, action) => {
     case ADD_SCOREBOARD:
       const newScoreboard = new Scoreboard(
         action.scoreboardData.title,
-        action.scoreboardData.date
+        action.scoreboardData.date,
+        action.scoreboardData.scores
       );
       return {
         scoreboards: state.scoreboards.concat(newScoreboard),

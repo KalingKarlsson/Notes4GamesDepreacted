@@ -1,10 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import Colors from "../constants/Colors";
 
 const ScoreboardItem = (props) => {
   return (
     <TouchableOpacity onPress={props.onSelect} style={styles.scoreboardItem}>
       <View style={styles.infoContainer}>
+        <Text style={styles.id}>{props.id}</Text>
         <Text style={styles.title}>{props.title}</Text>
         <Text style={styles.date}>{props.date}</Text>
       </View>
@@ -14,26 +16,33 @@ const ScoreboardItem = (props) => {
 
 const styles = StyleSheet.create({
   scoreboardItem: {
-    borderBottomColor: "#ccc",
-    borderBottomWidth: 1,
-    paddingVertical: 15,
+    borderColor: Colors.ceruleancrayola,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingVertical: 12,
     paddingHorizontal: 30,
-    flexDirection: "row",
+    marginVertical: 4,
     alignItems: "center",
   },
+  id: {
+    color: Colors.black,
+    fontSize: 24,
+    fontWeight: "bold",
+    borderRadius: 5,
+    borderColor: Colors.black,
+  },
   infoContainer: {
-    marginLeft: 25,
     width: 250,
-    justifyContent: "center",
-    alignItems: "flex-start",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   title: {
-    color: "black",
+    color: Colors.black,
     fontSize: 18,
-    marginBottom: 5,
+    fontWeight: "bold",
   },
   date: {
-    color: "#666",
+    color: Colors.black,
     fontSize: 16,
   },
 });

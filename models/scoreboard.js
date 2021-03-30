@@ -1,8 +1,8 @@
 class Scoreboard {
-  constructor(id, title, date) {
-    this.id = id;
+  constructor(title, date, scores) {
     this.title = title;
     this.date = date;
+    this.scores = scores;
   }
 }
 
