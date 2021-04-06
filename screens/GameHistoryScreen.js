@@ -22,7 +22,7 @@ const GameHistoryScreen = (props) => {
           {props.navigation.getParam("scoreboardTitle")}
         </Text>
         <Text style={styles.date}>
-          {props.navigation.getParam("scoreboardId")}
+          {props.navigation.getParam("scoreboardDate")}
         </Text>
       </View>
       <View style={styles.scores}>

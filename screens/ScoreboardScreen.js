@@ -206,9 +206,11 @@ const ScoreboardScreen = (props) => {
       onPress={() => {
         Alert.alert(
           "Scores",
-          allPlayersDone.length === playerNum.playerCount.length
-            ? printFinalScores()
-            : "All players are not finished yet!",
+          playerNum.playerCount.length !== 0
+            ? allPlayersDone.length === playerNum.playerCount.length
+              ? printFinalScores()
+              : "All players are not finished yet!"
+            : "Fill in players name in the 'Name' box",
           [
             {
               text: "OK",

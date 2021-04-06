@@ -31,6 +31,7 @@ const HistoryScreen = (props) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>History</Text>
       <FlatList
         data={scoreboards}
         keyExtractor={(itemData) => itemData.id}
@@ -43,7 +44,7 @@ const HistoryScreen = (props) => {
             onSelect={() => {
               props.navigation.navigate("GameHistory", {
                 scoreboardTitle: itemData.item.title,
-                scoreboardId: itemData.item.date,
+                scoreboardDate: itemData.item.date,
                 scoreboardScores: itemData.item.scores,
               });
             }}
@@ -65,6 +66,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     alignItems: "center",
+  },
+  title: {
+    fontSize: 28,
+    fontFamily: "open-sans-bold",
+    color: Colors.black,
+    marginBottom: "2%",
   },
 });
 
