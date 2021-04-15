@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Platform, FlatList, View, Text } from "react-native";
+import {
+  StyleSheet,
+  Platform,
+  FlatList,
+  View,
+  Text,
+  Animated,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 import ScoreboardItem from "../components/ScoreboardItem";
@@ -7,27 +14,6 @@ import Colors from "../constants/Colors";
 
 const HistoryScreen = (props) => {
   const scoreboards = useSelector((state) => state.scoreboards.scoreboards);
-  console.log(scoreboards);
-
-  /*
-    Array [
-  Scoreboard {
-    "date": "29/03/2021",
-    "scores": Array [
-      Object {
-        "name": "anton",
-        "place": 1,
-        "score": 16,
-      },
-      Object {
-        "name": "kalle",
-        "place": 2,
-        "score": 40,
-      },
-    ],
-    "title": "Liverpool",
-  }
-  */
 
   return (
     <View style={styles.container}>

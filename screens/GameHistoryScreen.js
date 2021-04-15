@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import CustomButton from "../components/CustomButton";
 import Colors from "../constants/Colors";
 
 const GameHistoryScreen = (props) => {
@@ -18,15 +19,21 @@ const GameHistoryScreen = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Text style={styles.title}>
-          {props.navigation.getParam("scoreboardTitle")}
-        </Text>
-        <Text style={styles.date}>
-          {props.navigation.getParam("scoreboardDate")}
-        </Text>
+        <View style={styles.headline}>
+          <Text style={styles.title}>
+            {props.navigation.getParam("scoreboardTitle")}
+          </Text>
+          <Text style={styles.date}>
+            {props.navigation.getParam("scoreboardDate")}
+          </Text>
+        </View>
+
+        <View style={styles.scores}>
+          <Text>{printFinalScores()}</Text>
+        </View>
       </View>
-      <View style={styles.scores}>
-        <Text>{printFinalScores()}</Text>
+      <View style={styles.deleteButton}>
+        <CustomButton title="Delete" onPress={() => {}} />
       </View>
     </View>
   );
@@ -46,18 +53,40 @@ const styles = StyleSheet.create({
   },
   date: {
     color: Colors.black,
-    fontSize: 16,
+    fontSize: 22,
+  },
+  deleteButton: {
+    backgroundColor: Colors.cancel,
+    paddingHorizontal: 20,
+    paddingVertical: 2,
+    marginTop: "26%",
+    //ios
+    shadowColor: Colors.black,
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    //android
+    elevation: 4,
+
+    //border
+    borderRadius: 8,
+  },
+  headline: {
+    justifyContent: "space-evenly",
+    flexDirection: "row",
   },
   infoContainer: {
     width: 250,
-    justifyContent: "space-evenly",
-    flexDirection: "row",
     paddingVertical: 50,
   },
-  scores: {},
+  scores: {
+    alignItems: "center",
+    paddingTop: "16%",
+    fontSize: 16,
+  },
   title: {
     color: Colors.black,
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
   },
 });

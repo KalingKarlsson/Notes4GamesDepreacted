@@ -1,4 +1,7 @@
-import { ADD_SCOREBOARD } from "../actions/scoreboard-actions";
+import {
+  ADD_SCOREBOARD,
+  DELETE_SCOREBOARD,
+} from "../actions/scoreboard-actions";
 import Scoreboard from "../../models/scoreboard";
 
 const initialState = {
