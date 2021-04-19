@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
-import {
-  StyleSheet,
-  Platform,
-  FlatList,
-  View,
-  Text,
-  Animated,
-} from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, FlatList, View, Text } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 
 import ScoreboardItem from "../components/ScoreboardItem";
 import Colors from "../constants/Colors";
+import * as scoreboardActions from "../store/actions/scoreboard-actions";
 
 const HistoryScreen = (props) => {
   const scoreboards = useSelector((state) => state.scoreboards.scoreboards);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(scoreboardActions.loadScoreboard());
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>

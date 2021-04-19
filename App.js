@@ -5,8 +5,18 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 
+import { init } from "./helper/db";
 import NotesNavigator from "./navigation/NotesNavigator";
 import scoreboardReducer from "./store/reducers/scoreboard-reducer";
+
+init()
+  .then(() => {
+    console.log("Initialized database");
+  })
+  .catch((err) => {
+    console.log("Initializing db failed.");
+    console.log(err);
+  });
 
 const rootReducer = combineReducers({
   scoreboards: scoreboardReducer,
