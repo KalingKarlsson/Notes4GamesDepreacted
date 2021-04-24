@@ -8,6 +8,7 @@ import ReduxThunk from "redux-thunk";
 import { init } from "./helper/db";
 import NotesNavigator from "./navigation/NotesNavigator";
 import scoreboardReducer from "./store/reducers/scoreboard-reducer";
+import playerReducer from "./store/reducers/player-reducer";
 
 init()
   .then(() => {
@@ -20,6 +21,7 @@ init()
 
 const rootReducer = combineReducers({
   scoreboards: scoreboardReducer,
+  players: playerReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 

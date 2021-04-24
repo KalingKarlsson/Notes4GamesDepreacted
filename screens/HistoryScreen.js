@@ -20,7 +20,7 @@ const HistoryScreen = (props) => {
       <Text style={styles.title}>History</Text>
       <FlatList
         data={scoreboards}
-        keyExtractor={(itemData) => itemData.id}
+        keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
           <ScoreboardItem
             key={itemData.item.id}

@@ -10,12 +10,13 @@ import {
   Alert,
   useWindowDimensions,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import CustomButton from "../components/CustomButton";
 import GridItem from "../components/GridItem";
 import Colors from "../constants/Colors";
 import * as scoreboardsActions from "../store/actions/scoreboard-actions";
+import * as playersActions from "../store/actions/player-actions";
 
 const Liverpool = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const Skummeslöv = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
@@ -40,7 +41,6 @@ const ScoreboardScreen = (props) => {
   }
 
   const dispatch = useDispatch();
-  //const availablePlayers = useSelector((state) => state.scoreboard.players);
 
   const selectedAmountOfPlayers = props.navigation.getParam("playerAmount");
 
@@ -49,7 +49,17 @@ const ScoreboardScreen = (props) => {
   const window = useWindowDimensions();
 
   const saveScoreboardHandler = () => {
-    dispatch(scoreboardsActions.addScoreboard(pickedGame, outputData()));
+    dispatch(scoreboardsActions.addScoreboard(pickedGame, "works"));
+  };
+
+  const savePlayersHandler = () => {
+    const results = outputData();
+    for (let i = 0; i < results.length; i++) {
+      const element = results[i];
+      dispatch(
+        playersActions.addPlayer(element.name, element.place, element.score)
+      );
+    }
   };
 
   const contentArrPort = () => {
@@ -182,6 +192,7 @@ const ScoreboardScreen = (props) => {
         score: element.sum,
       });
     }
+
     return finalResultsTotal;
   };
 
@@ -197,6 +208,7 @@ const ScoreboardScreen = (props) => {
         element.place + ": " + element.name + "    " + element.score + "\n";
     }
     saveScoreboardHandler();
+    savePlayersHandler();
     return rows;
   };
 

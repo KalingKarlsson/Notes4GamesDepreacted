@@ -1,19 +1,73 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+
 import CustomButton from "../components/CustomButton";
 import Colors from "../constants/Colors";
+import * as playerActions from "../store/actions/player-actions";
 
 const GameHistoryScreen = (props) => {
   const printFinalScores = () => {
     const finalScores = props.navigation.getParam("scoreboardScores");
+    const players = useSelector((state) => state.players.players);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(playerActions.loadPlayers());
+    }, [dispatch]);
+
+    console.log("players", players);
+    //console.log(finalScores);
+
+    /*     function malformedJSON2Array(tar) {
+      var arr = [];
+      tar = tar.replace(/^\{|\}$/g, "").split(",");
+      for (var i = 0, cur, pair; (cur = tar[i]); i++) {
+        arr[i] = {};
+        pair = cur.split(":");
+        arr[i][pair[0]] = /^\d*$/.test(pair[1]) ? +pair[1] : pair[1];
+      }
+      return arr;
+    }
+
+    const correctFormat = malformedJSON2Array(finalScores); */
+    /*
+     * final scores raw 
+    (
+        {
+        name = te;
+        place = 1;
+        score = 50;
+    },
+        {
+        name = anr;
+        place = 2;
+        score = 123;
+    }
+)
+     */
+
+    /*     let foo = finalScores.replace(/[=]/g, ":");
+    let foo2 = foo.replace(/[();]/g, "");
+
+    console.log(JSON.parse(foo2)); */
+    /*     let strippedFinalScores = finalScores.replace(/[{(,;)}]/g, "");
+
+    strippedFinalScores = strippedFinalScores.replace("name =", "");
+    strippedFinalScores = strippedFinalScores.replace("place =", "");
+
+    strippedFinalScores = strippedFinalScores.replace("score =", ""); */
+
     let rows = "";
 
-    for (let i = 0; i < finalScores.length; i++) {
-      const element = finalScores[i];
-      rows +=
-        element.place + ": " + element.name + "    " + element.score + "\n";
-    }
-    return rows;
+    /*     for (let i = 0; i < finalScores.length; i++) {
+      let element = finalScores[i];
+      element = element.replace(/[{(,= \n;)}]/g, "");
+      rows += element;
+    } */
+
+    return finalScores;
   };
 
   return (
