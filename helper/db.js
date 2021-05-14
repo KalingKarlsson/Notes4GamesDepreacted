@@ -83,7 +83,6 @@ export const fetchScoreboards = () => {
         "SELECT * FROM scoreboards",
         [],
         (_, result) => {
-          console.log(result);
           resolve(result);
         },
         (_, err) => {
@@ -103,11 +102,28 @@ export const fetchPlayers = () => {
         "SELECT * FROM players",
         [],
         (_, result) => {
-          console.log(result);
           resolve(result);
         },
         (_, err) => {
           console.log(err);
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+export const deleteScoreboard = (scoreboardId) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `DELETE FROM scoreboards WHERE id = ?;`,
+        [scoreboardId],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
           reject(err);
         }
       );

@@ -1,74 +1,33 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import CustomButton from "../components/CustomButton";
+import PlayerItem from "../components/PlayerItem";
 import Colors from "../constants/Colors";
 import * as playerActions from "../store/actions/player-actions";
 
 const GameHistoryScreen = (props) => {
-  const printFinalScores = () => {
-    const finalScores = props.navigation.getParam("scoreboardScores");
-    const players = useSelector((state) => state.players.players);
+  const players = useSelector((state) => state.players.players);
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(playerActions.loadPlayers());
+  }, [dispatch]);
 
-    useEffect(() => {
-      dispatch(playerActions.loadPlayers());
-    }, [dispatch]);
-
-    console.log("players", players);
-    //console.log(finalScores);
-
-    /*     function malformedJSON2Array(tar) {
-      var arr = [];
-      tar = tar.replace(/^\{|\}$/g, "").split(",");
-      for (var i = 0, cur, pair; (cur = tar[i]); i++) {
-        arr[i] = {};
-        pair = cur.split(":");
-        arr[i][pair[0]] = /^\d*$/.test(pair[1]) ? +pair[1] : pair[1];
-      }
-      return arr;
-    }
-
-    const correctFormat = malformedJSON2Array(finalScores); */
-    /*
-     * final scores raw 
-    (
-        {
-        name = te;
-        place = 1;
-        score = 50;
-    },
-        {
-        name = anr;
-        place = 2;
-        score = 123;
-    }
-)
-     */
-
-    /*     let foo = finalScores.replace(/[=]/g, ":");
-    let foo2 = foo.replace(/[();]/g, "");
-
-    console.log(JSON.parse(foo2)); */
-    /*     let strippedFinalScores = finalScores.replace(/[{(,;)}]/g, "");
-
-    strippedFinalScores = strippedFinalScores.replace("name =", "");
-    strippedFinalScores = strippedFinalScores.replace("place =", "");
-
-    strippedFinalScores = strippedFinalScores.replace("score =", ""); */
-
-    let rows = "";
-
-    /*     for (let i = 0; i < finalScores.length; i++) {
-      let element = finalScores[i];
-      element = element.replace(/[{(,= \n;)}]/g, "");
-      rows += element;
-    } */
-
-    return finalScores;
-  };
+  /*     players Array [
+      Player {
+        "id": "1",
+        "name": "tess",
+        "place": 1,
+        "score": 54,
+      },
+      Player {
+        "id": "2",
+        "name": "anton",
+        "place": 2,
+        "score": 56,
+      }, */
 
   return (
     <View style={styles.container}>
@@ -83,7 +42,18 @@ const GameHistoryScreen = (props) => {
         </View>
 
         <View style={styles.scores}>
-          <Text>{printFinalScores()}</Text>
+          <FlatList
+            data={players}
+            keyExtractor={(item) => item.id}
+            renderItem={(itemData) => (
+              <PlayerItem
+                key={itemData.item.id}
+                place={itemData.item.place}
+                name={itemData.item.name}
+                score={itemData.item.score}
+              />
+            )}
+          />
         </View>
       </View>
       <View style={styles.deleteButton}>

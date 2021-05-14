@@ -1,7 +1,12 @@
-import { insertScoreboard, fetchScoreboards } from "../../helper/db";
+import {
+  insertScoreboard,
+  fetchScoreboards,
+  deleteScoreboard,
+} from "../../helper/db";
 
 export const ADD_SCOREBOARD = "ADD_SCOREBOARD";
 export const SET_SCOREBOARDS = "SET_SCOREBOARDS";
+export const DELETE_SCOREBOARD = "DELETE_SCOREBOARD";
 
 export const addScoreboard = (title, scores) => {
   return async (dispatch) => {
@@ -31,6 +36,18 @@ export const loadScoreboard = () => {
     try {
       const dbResult = await fetchScoreboards();
       dispatch({ type: SET_SCOREBOARDS, scoreboards: dbResult.rows._array });
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
+export const deleteSelectedScoreboard = (scoreboardId) => {
+  return async (dispatch) => {
+    try {
+      const dbResult = await deleteScoreboard(scoreboardId);
+      console.log(dbResult);
+      dispatch({ type: DELETE_SCOREBOARD, scoreboards: dbResult.rows._array });
     } catch (err) {
       throw err;
     }

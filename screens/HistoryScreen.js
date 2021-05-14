@@ -1,19 +1,33 @@
-import React, { useEffect } from "react";
-import { StyleSheet, FlatList, View, Text } from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import { StyleSheet, FlatList, View, Text, RefreshControl } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import ScoreboardItem from "../components/ScoreboardItem";
 import Colors from "../constants/Colors";
 import * as scoreboardActions from "../store/actions/scoreboard-actions";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const HistoryScreen = (props) => {
   const scoreboards = useSelector((state) => state.scoreboards.scoreboards);
+  const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(scoreboardActions.loadScoreboard());
   }, [dispatch]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  const deleteScoreboardHandler = (scoreboardId) => {
+    dispatch(scoreboardActions.deleteSelectedScoreboard(scoreboardId));
+  };
 
   return (
     <View style={styles.container}>
@@ -34,8 +48,14 @@ const HistoryScreen = (props) => {
                 scoreboardScores: itemData.item.scores,
               });
             }}
+            handleDelete={() => {
+              deleteScoreboardHandler(itemData.item.id);
+            }}
           />
         )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </View>
   );

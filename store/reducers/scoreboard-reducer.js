@@ -1,4 +1,8 @@
-import { ADD_SCOREBOARD, SET_SCOREBOARDS } from "../actions/scoreboard-actions";
+import {
+  ADD_SCOREBOARD,
+  SET_SCOREBOARDS,
+  DELETE_SCOREBOARD,
+} from "../actions/scoreboard-actions";
 import Scoreboard from "../../models/scoreboard";
 
 const initialState = {
@@ -22,6 +26,13 @@ export default (state = initialState, action) => {
       );
       return {
         scoreboards: state.scoreboards.concat(newScoreboard),
+      };
+    case DELETE_SCOREBOARD:
+      return {
+        ...state,
+        scoreboards: state.scoreboards.filter(
+          (item, index) => index !== action.payload
+        ),
       };
     default:
       return state;
